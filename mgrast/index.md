@@ -4,7 +4,7 @@ MG-RAST and its API
 
 Just like the NCBI databases, there are many ways you can interact with MG-RAST, and the web interface is possibly the *worst* way.
 
-Another way you could work with MG-RAST is to download the entire database and then write parsers to get what you want out of it.  I've also found this incredibly painful but if you want to do that, you can find its database `here <ftp://ftp.metagenomics.anl.gov/data/M5nr/>`_.     
+Another way you could work with MG-RAST is to download the entire database and then write parsers to get what you want out of it.  I've also found this incredibly painful but if you want to do that, you can find its database [here] (ftp://ftp.metagenomics.anl.gov/data/M5nr/).     
 
 The best way to access MG-RAST data in my experience is to learn to use their API.  MG-RAST has done a decent job publishing `API documentation <http://api.metagenomics.anl.gov/>`_ -- it just takes a bit of practice to understand its structure.  
 
@@ -13,9 +13,7 @@ Example Usage
 
 You read a paper, and the authors reference MG-RAST metagenomes.  You want to download these so you can reproduce some of the analysis and ask some of your own questions. 
 
-.. image:: fierer_pnas_s2.png
-    :scale: 100%
-    :align: center
+<img src="fierer_pnas_s2.png" alt="fierer_pnas_s2" style="width: 700px;"/>
 
 For example, here is some data from a recent PNAS paper, "Cross-biome metagenomic analyses of soil microbial communities and their functional attributes"
 
@@ -32,13 +30,11 @@ These two commands above download a specific file or show files from a specific 
 Remember that you can also access the same commands on the shell with the *curl* command, but you need to know what kind of output you expect.
 
 This command outputs a file so you need to save the file to an output:
-
     ```
     curl "http://api.metagenomics.anl.gov/1/download/mgm4447943.3?file=350.1" > 350.1.fastq.gz
     ```
 
 This command returns text (in JSON structure):
-    
     ```
     curl "http://api.metagenomics.anl.gov/1/download/mgm4447943.3?stage=650"
     ```
