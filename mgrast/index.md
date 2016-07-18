@@ -31,7 +31,6 @@ These two commands above download a specific file or show files from a specific 
 
 Remember that you can also access the same commands on the shell with the *curl* command, but you need to know what kind of output you expect.
 
-.. _in-markdown:
 This command outputs a file so you need to save the file to an output:
 
     ```
