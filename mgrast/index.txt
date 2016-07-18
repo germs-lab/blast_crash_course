@@ -31,9 +31,9 @@ These two commands above download a specific file or show files from a specific 
 
 Remember that you can also access the same commands on the shell with the *curl* command, but you need to know what kind of output you expect.
 
+.. _in-markdown:
 This command outputs a file so you need to save the file to an output:
 
-    
     ```
     curl "http://api.metagenomics.anl.gov/1/download/mgm4447943.3?file=350.1" > 350.1.fastq.gz
     ```
