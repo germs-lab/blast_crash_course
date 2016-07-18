@@ -4,9 +4,9 @@ MG-RAST and its API
 
 Just like the NCBI databases, there are many ways you can interact with MG-RAST, and the web interface is possibly the *worst* way.
 
-Another way you could work with MG-RAST is to download the entire database and then write parsers to get what you want out of it.  I've also found this incredibly painful but if you want to do that, you can find its database [here] (ftp://ftp.metagenomics.anl.gov/data/M5nr/).     
+Another way you could work with MG-RAST is to download the entire database and then write parsers to get what you want out of it.  I've also found this incredibly painful but if you want to do that, you can find its database [here](ftp://ftp.metagenomics.anl.gov/data/M5nr/).     
 
-The best way to access MG-RAST data in my experience is to learn to use their API.  MG-RAST has done a decent job publishing `API documentation <http://api.metagenomics.anl.gov/>`_ -- it just takes a bit of practice to understand its structure.  
+The best way to access MG-RAST data in my experience is to learn to use their API.  MG-RAST has done a decent job publishing [API documentation](http://api.metagenomics.anl.gov/) -- it just takes a bit of practice to understand its structure.  
 
 Example Usage
 -------------
