@@ -33,11 +33,14 @@ Remember that you can also access the same commands on the shell with the *curl*
 
 This command outputs a file so you need to save the file to an output:
 
+    ```
     curl "http://api.metagenomics.anl.gov/1/download/mgm4447943.3?file=350.1" > 350.1.fastq.gz
+    ```
 
 This command returns text (in JSON structure):
-
+    ```
     curl "http://api.metagenomics.anl.gov/1/download/mgm4447943.3?stage=650"
+    ```
 
 As a beginner, I often didn't know what to expect and would just try things out -- which I recommend as a good way to learn.
 
@@ -129,8 +132,9 @@ A note on JSON
 --------------
 
 You might be wondering how to work with these JSON outputs in your own scripting.  For example, for this call::
-
+    ```
     curl http://api.metagenomics.anl.gov//m5nr/md5/000821a2e2f63df1a3873e4b280002a8?version=10
+    ```
 
 The output of the raw JSON looks like this:
 
@@ -139,17 +143,19 @@ The output of the raw JSON looks like this:
     :align: center
 
 If you look closely, it looks a lot like a Python *dictionary* structure and that's how most folks interact with it.  Since I program mainly in Python, I use its JSON libraries to work with these outputs in my scripting.  I installed the library `ijson <https://pypi.python.org/pypi/ijson/>`_.  In your home directory on your instance, install the library::
-
+    ```
     curl https://pypi.python.org/packages/source/i/ijson/ijson-1.1.tar.gz
     tar -zxvf ijson-1.1.tar.gz
     cd ijson-1.1
     python setup.py install
+    ```
 
 You can test that it was installed::
-
+    ```
     python
     >>import ijson
     >>
+    ```
 
 No error message means you're good to go.
 
@@ -158,7 +164,7 @@ To work with this data structure, I'd look at it first in your pretty JSON-print
 You'll notice that the data is broken down into a set of nested objects.  In this example, the first level contains objects like the version, url, and data.  If you go into the data object, you'll see nested data about source, function, type, ncbi_tax_id, etc.
 
 I access the specific object "data" in Python with the following code::
-
+    ```
     import urllib
     import ijson
 
@@ -170,13 +176,15 @@ I access the specific object "data" in Python with the following code::
     for item in objects:
         for x in item["data"]:
             print x["function"], x["ncbi_tax_id"], x["organism"], x["source"], x["type"], x["md5"]
+    ```
 
 Now, if I had a much larger object, say the one below, I'd save it to a file first::
-
+    ```
     curl http://api.metagenomics.anl.gov/1/m5nr/taxonomy?version=1 > taxonomy_download.json
+    ```
 
 Then, I would parse through the file::
-
+    ```
     import urllib
     import ijson
     import sys
@@ -189,7 +197,7 @@ Then, I would parse through the file::
             if x.has_key("domain"):
                 print x["domain"], x["ncbi_tax_id"]
                 #note that not all tax_id's have an associated domain
-
+    ```
 
 Exercise - linking MG-RAST to taxonomy
 --------------------------------------
