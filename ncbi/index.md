@@ -213,11 +213,10 @@ Frequently, we ask the question of whether a gene is present or not in our metag
 There are lots of ways to do this and arguably "blasting" is one of the most common.
 What we have done so far is collecting a specific set (i.e., nifH) of genes from a public database. We can use this collection as our new blast database.
 To blast, you will need to:    
-    1. Format your downloaded nifH gene fasta file ("**all-nifH.fa**") for blast   
-         Hint: use `makeblastdb`    
-    
+    1. Format your downloaded nifH gene fasta file ("**all-nifH.fa**") for blast     
+    .. Hint: use `makeblastdb`    
     2. Perform blast     
-         Hint: use `blastn`
+    .. Hint: use `blastn`
 
 
 Also please see Tracy Teal's tutorial [here](https://github.com/edamame-course/BLAST-tutorial/blob/master/running-BLAST.md) for reference.
