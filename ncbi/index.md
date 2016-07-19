@@ -53,21 +53,15 @@ Navigate to the data directory and identify the number of sequences in each file
 
 To find sequences, we know that each sequence will start with a special character, ">".  This character in the shell, remember, is a bit special.  So to find it as a symbol in the text, we're going to put a '^' right before it in quotes:
 
-    ```
     grep ^">" corn.fa
-    ```
 
 Now, to count, you'll remember we can use the command "wc", with a pipe...So you're command will look something like this:
     
-    ```
     grep ^">" corn.fa | wc
-    ```
 
 Or...if you want to do this quicky::
    
-    ```
     for x in *fa; do echo $x; grep ^">" $x | wc; done
-    ```
 
 To identify nitrogen fixation genes, you've been tasked to build a database of all previously observed known nitrogen fixation genes (nifH).  To build this database, you have been reading literature for about two weeks and come up with a list of about 30 genes:
 
@@ -99,7 +93,7 @@ Task 5
 ------
 Find that file on your computer and give it a peek.  If you're feeling up for it, transfer it to your EC2 instance (hint:  scp).
 
-To make this tutorial not-as-painful to complete in a reasonable amount of time, I've also made a list of 300 nifH genes from NCBI and put them in a file `**300-nifh-genes.txt**` in the data directory.  I would highly suggest you use this gene to build your database going forward in this tutorial.
+To make this tutorial not-as-painful to complete in a reasonable amount of time, I've also made a list of 300 nifH genes from NCBI and put them in a file **300-nifh-genes.txt** in the data directory.  I would highly suggest you use this gene to build your database going forward in this tutorial.
 
 Task 6
 ------
@@ -127,7 +121,7 @@ Here's some [answers](http://stackoverflow.com/questions/7440379/what-exactly-is
 
 The NCBI has a whole toolkit which they call **Entrez Programming Utilities** or **eutils** for short.  You can read all about it in the [documentation](http://www.ncbi.nlm.nih.gov/books/NBK25501/).  There are a lot of things you can do to interface with all things NCBI, including publications, etc., but I am going to focus today on downloading sequencing data. NCBI has also developed [Entrez Direct](http://www.ncbi.nlm.nih.gov/news/02-06-2014-entrez-direct-released/) to directly access, parse, and dowload from NCBI databases from command line.
 
-Today we are going to focus on how to obtain sequence files using `curl` or `wget` and eutil web links from command line. To do this, you're going to be using one tool in **eutils**, called **efetch**.  There is a whole chapter devoted to [efetch](http://www.ncbi.nlm.nih.gov/books/NBK25499/**chapter4.EFetch] -- when I first started doing this kind of work, this documentation always broke my heart.  Its easier for me to just show you how to use it.
+Today we are going to focus on how to obtain sequence files using `curl` or `wget` and eutil web links from command line. To do this, you're going to be using one tool in **eutils**, called **efetch**.  There is a whole chapter devoted to [efetch](http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.EFetch) -- when I first started doing this kind of work, this documentation always broke my heart.  Its easier for me to just show you how to use it.
 
 Task 8
 ------
@@ -139,7 +133,7 @@ Task 9
 
 Download the gene with eutils commands in your web-browser and take a look at the file.
 
-On your web-browser, paste the following URL to download the nucleotide genome for gene **X51500.1i**:   
+On your web-browser, paste the following URL to download the nucleotide genome for gene **X51500.1**:   
     ```
     http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=X51500.1&rettype=fasta&retmode=text
     ```
@@ -149,9 +143,7 @@ Task 10
 
 Try downloading the GenBank file instead by pasting this onto your web-browser:
 
-    ```
     http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=CP000962&rettype=gb&retmode=text
-    ```
 
 Do you notice the difference in these two commands?  Let's breakdown the command here:
 
@@ -174,14 +166,14 @@ Task 11
 Download a gene sequence on the command line.
 
 Going back onto your instance, in the shell, you could run the same commands above with the addition of *curl* on your EC2 instance:    
-    ```
+    
     curl "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=X51500.1&rettype=fasta&retmode=text"
-    ```
+
 
 You'll see it fly on to your screen.  Don't panic - you can save it to a file and make it more useful BUT note the path you are in and where you will save this file (as long as you know...that's fine):    
-    ```
+    
     curl "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=X51500.1&rettype=fasta&retmode=text" > X51500.1.fa
-    ```
+
 
 You could now imagine writing a program where you made a list of IDs you want to download and put it in a for loop, *curling* each genome and saving it to a file.  The following is a [script](https://github.com/adina/tutorial-ngs-2014/blob/master/ncbi/fetch-genomes.py).  Thanks to Jordan Fish who gave me the original version of this script before I even knew how and made it easy to use.
 
