@@ -198,7 +198,7 @@ Run this script (note that your paths for the script or data may need to be spec
 Sit back and think of the glory that is happening on your screen right now...
 
 **Note:**    
-If you are nervous....you may want to run this on just a few of these IDs to begin with.  You can create a smaller list using the *head* command with the -n parameter in the shell.  For example, `head -n 3 300-nifh-genes.txt > 3genes.txt`.
+If you are nervous....you may want to run this on just a few of these IDs to begin with.  You can create a smaller list using the **head** command with the -n parameter in the shell.  For example, `head -n 3 300-nifh-genes.txt > 3genes.txt`.
 
 Task 12b
 --------

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-rm -r $2 && mkdir $2
+[ -d $2 ] || mkdir $2
 
 while read gi
 do
