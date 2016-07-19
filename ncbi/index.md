@@ -216,6 +216,7 @@ What we have done so far is collecting a specific set (i.e., nifH) of genes from
 To blast, you will need to:    
 1. Format your downloaded nifH gene fasta file ("**all-nifH.fa**") for blast    
   + Hint: use `makeblastdb`   
+
 2. Perform blast     
   + Hint: use `blastn`
 
