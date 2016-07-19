@@ -134,9 +134,9 @@ Task 9
 Download the gene with eutils commands in your web-browser and take a look at the file.
 
 On your web-browser, paste the following URL to download the nucleotide genome for gene **X51500.1**:   
-    ```
+    
     http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=X51500.1&rettype=fasta&retmode=text
-    ```
+
 
 Task 10
 -------
@@ -175,22 +175,20 @@ You'll see it fly on to your screen.  Don't panic - you can save it to a file an
     curl "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=X51500.1&rettype=fasta&retmode=text" > X51500.1.fa
 
 
-You could now imagine writing a program where you made a list of IDs you want to download and put it in a for loop, *curling* each genome and saving it to a file.  The following is a [script](https://github.com/adina/tutorial-ngs-2014/blob/master/ncbi/fetch-genomes.py).  Thanks to Jordan Fish who gave me the original version of this script before I even knew how and made it easy to use.
+You could now imagine writing a program where you made a list of IDs you want to download and put it in a for loop, *curling* each genome and saving it to a file.  The following is a shell [script](). It should be located in your current directory. Let's take a quick look at it (Hint: less).
 
-To see the documentation for this script in the scripts directory:    
-    ```
-    python fetch-genomes-fasta.py
-    ```
+You'll see that the *id* here is a string character which is obtained from list of IDs contained in a separate file.  The rest of the script manages where the files are being placed and what they are named.  It also prints some output to the screen so you know its running.
+    
 
-You'll see that you need to provide a list of IDs and a directory where you want to save the downloaded files.
+You'll see that you need to provide a list of IDs (the first argument) and a directory where you want to save the downloaded files (the second argument).
 
 Task 12a
 --------
 
 Run this script (note that your paths for the script or data may need to be specified) -- also see note below:   
-    ```
-    python scripts/fetch-genomes-fasta.py data/300-nifh-genes.txt data/nifh-database-fastas
-    ```
+    
+    bash fetch_genome.sh ../data/300-nifh-genes.txt nifh_genes_fas
+
 
 Sit back and think of the glory that is happening on your screen right now...
 
@@ -204,86 +202,22 @@ After all the 300 genes are downloaded, you will want to concatenate them into o
 
 Task 13
 -------
-Look at the script/program content in "**fetch-genomes-fasta.py**".
-
-The meat of this script uses the following code:    
-    ```
-    url_template = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nucleotide&id=%s&rettype=gb&retmode=text"
-    ```
-
-You'll see that the *id* here is a string character which is obtained from list of IDs contained in a separate file.  The rest of the script manages where the files are being placed and what they are named.  It also prints some output to the screen so you know its running.
-
-Task 14
--------
 Take a break.   Put up your pink stickie if you need help with this.
 
 ====================================
-Comparing your data to the databases
+Moving forward on your own: comparing your data to the databases
 ====================================
 
-So there are lots of ways to do this and arguably "blasting" is one of the most common.  If you're already familiar with how to run BLAST, you can just tackle this next task.  Else, instructions from Titus Brown's NGS course are below.
+Frequently, we ask the question of whether a gene is present or not in our metagenome (and their potential abundance). 
+There are lots of ways to do this and arguably "blasting" is one of the most common.
+What we have done so far is collecting a specific set (i.e., nifH) of genes from a public database. We can use this collection as our new blast database.
+To blast, you will need to:    
+    1. Format your downloaded nifH gene fasta file ("**all-nifH.fa**") for blast   
+         Hint: use `makeblastdb`    
+    2. Perform blast     
+         Hint: blastn
 
-Task 15
--------
-Format your nifH database for BLAST and then perform an alignment (with BLAST) of your metagenomes against your new database.  You should also add your lit search genes (those 30 genes) into your NCBI downloaded genes if you're up to the challenge -- it takes a couple steps.  I would suggest something like the following variables::
-
-    blastall -i <metagenome file> -d <nifh-db> -m 8 -a 8 -p blastn -o <metag.blastnout.m8> -b 1 -e 1e-5
-
-This takes a bit of time...so stretch a bit.  Like all good bioformaticians, you should go do something fun while the computer does all the work.  If you want to see it running, try using the "top" command.
-
-.. Note::
-
-    `BLAST initiation or refresher tutorial <http://angus.readthedocs.org/en/2014/running-command-line-blast.html>`_.  I have put a cheatsheet of the commands I used in the scripts directory -- if you need another hint.
-
-Task 16
--------
-Examine your blast outputs.  What do the first few lines contain?  How many hits do you have per metagenome to your database?
-
-=======================
-Next steps, what's next
-=======================
-
-Let's step back.  What is the reason for annotating your genes?  You want to get an idea of what genes are in each soil metagenome as well as a quantitative estimate of each gene.   Eventually, you would likely use this information to do some statistical analyses -- maybe in sophisticated packages like Qiime, Mothur, or Phyloseq.  All these programs take similar inputs, and the big secret is knowing what they are and how to parse/move/shift/wrangel this information into the specific format needed for each program:
-
-**. Metadata/Environmental data - What treatment does corn.fa represent -- duh, corn!  When was it sampled?  What kind of other data have you collected on this sample (amount of fertilizer, etc).
-**. Annotation information - What are the corresponding annotations to whatever shortcut ID associated with your genes (e.g., GI number).  This file can also contain some ontology / hierarchical information (e.g., Taxonomy domains / phyla / species).
-**. Abundance estimates - What are the estimates of each gene in each metagenome sample.
-
-Of these, you should be able to make a metadata file for your experiment.  The annotation file can be provided by your database.
-
-You have a list of genes GI IDs and can pull the annotation of the gene from the header in the database nucleotide file OR better yet from the Genbank file.  For example, you might pull out the lineage of each gene from the Genbank file and have taxonomy to provide for each gene.
-
-Perhaps the most difficult is to get the abundance estimates.  Intuitively, you can think about how to get this out of the BLAST outputs.  I observed Gene X, Y times in dataset I, Z times in dataset II.  Fortunately, I have a script to do this computationally.
-
-Task 17
--------
-Produce an abundance table of all genes in your 3 metagenomes::
-
-    python count-up.py <all your blast output files>
-
-For example::
-
-    python scripts/count-up.py  data/*blastnout
-
-This script produces a file, 'summary-count.tsv'.
-
-Task 18
--------
-Take a look at 'summary-count.tsv'.  What's in it?
-
-Task 19
--------
-Often, I get really excited and need to know what gene is associated with each Gene ID.  I like to pull in my annotations.  Let's add the annotations by giving this a try::
-
-    python import-ann.py <blast database fasta file> summary-count.tsv > <output file>
-
-For example::
-
-    python import-ann.py nif-genes.fa summary-count.tsv > summary-count-annotated.tsv
-
-Task 20
--------
-Transfer the annotated file over to your laptop and open it in Excel.
+Also please see Tracy Teal's tutorial [here](https://github.com/edamame-course/BLAST-tutorial/blob/master/running-BLAST.md) for reference.
 
 ==========
 Conclusion
@@ -296,47 +230,4 @@ You now have the foundation for having some sequencing data that you need to com
 Bonus Material on Genbank Files and Genome downloads
 ====================================================
 
-Try modifying the fetch-genomes-fasta.py script to download just the Genbank file of the genes.
-
-Some comments on Genbank files:
-
-Download a bacterial genome's genbank file.
-
-Genbank files have a special structure to them.  You can look at it and figure it out for the most part, or read about it in detail `here <http://www.ncbi.nlm.nih.gov/Sitemap/samplerecord.html>`_.  To find out if your downloaded Genbank files contain 16S rRNA genes, I like to run the following command::
-
-    grep 16S *gbk
-
-This should look somewhat familiar from your shell lesson, but basically we're looking for anylines that contain the character "16S" in any Genbank file we've downloaded.  Note that you'll have to run this in the directory where you downloaded these files.
-
-The structure of the Genbank file allows you to identify 16S genes.  For example, ::
-
-         rRNA        9258..10759
-                     /gene="rrs"
-                     /locus_tag="CLK_3816"
-                     /product="16S ribosomal RNA"
-                     /db_xref="Pathema:CLK_3816"
-
-You could write code to find text like 'rRNA' and '/product="16S ribosomal RNA"', grab the location of the gene, and then go to the FASTA file and grab these sequences.  I've done that before.
-
-You could also use existing packages to parse Genbank files.  I have the most experience with BioPython.  To begin with, let's just use BioPython so you can get to using existing scripts without writing scripts.
-
-
-First, we'll have to install BioPython on your instance and they've made that pretty easy::
-
-    apt-get install python-biopython
-
-Fan Yang (Iowa State University) and I wrote a script to extract 16S rRNA sequences from Genbank files, `here <https://github.com/adina/tutorial-ngs-2014/blob/master/ncbi/parse-genbank.py>`_.  It basically searches for text strings in the Genbank structure that is appropriate for these particular genes.  You can read more about BioPython `here <http://biopython.org/DIST/docs/tutorial/Tutorial.html>`_ and its Genbank parser `here <http://biopython.org/DIST/docs/api/Bio.GenBank-module.html>`_.
-
-To run this script on the Genbank file for CP000962::
-
-    /usr/bin/python parse-genbank.py genbank-files/CP000962.gbk > genbank-files/CP000962.gbk.16S.fa
-
-The resulting output file contains all 16S rRNA genes from the given Genbank file.
-
-To run this for multiple files, I use a shell for loop::
-
-    for x in genbank-files/*; do /usr/bin/python parse-genbank.py $x > $x.16S.fa; done
-
-There are multiple ways to get this done -- but this is how I like to do it.
-
-And there you have it, you can now pretty much automatically grab 16S rRNA genes from any number of genomes in NCBI databases.
+We also use a lot of python to work with eutil as well as blast results. The alternative version of this tutorial contains lots of python code. If you are interested, they can be found [here](https://github.com/germs-lab/tutorial-blast-annotation/blob/master/ncbi/index.txt).  
