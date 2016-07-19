@@ -177,7 +177,7 @@ You'll see it fly on to your screen.  Don't panic - you can save it to a file an
     curl "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=X51500.1&rettype=fasta&retmode=text" > X51500.1.fa
 
 
-You could now imagine writing a program where you made a list of IDs you want to download and put it in a for loop, *curling* each genome and saving it to a file.  The following is a shell [script](). It should be located in your current directory. Let's take a quick look at it (Hint: less).
+You could now imagine writing a program where you made a list of IDs you want to download and put it in a for loop, *curling* each genome and saving it to a file.  The following is a shell script, ["fetch_genome.sh"](https://github.com/germs-lab/tutorial-blast-annotation/blob/master/ncbi/fetch_genome.sh). It should be located in your current directory. Let's take a quick look at it (Hint: less).
 
 You'll see that the *id* here is a string character which is obtained from list of IDs contained in a separate file.  The rest of the script manages where the files are being placed and what they are named.  It also prints some output to the screen so you know its running.
     
@@ -215,8 +215,10 @@ What we have done so far is collecting a specific set (i.e., nifH) of genes from
 To blast, you will need to:    
     1. Format your downloaded nifH gene fasta file ("**all-nifH.fa**") for blast   
          Hint: use `makeblastdb`    
+    
     2. Perform blast     
-         Hint: blastn
+         Hint: use `blastn`
+
 
 Also please see Tracy Teal's tutorial [here](https://github.com/edamame-course/BLAST-tutorial/blob/master/running-BLAST.md) for reference.
 
