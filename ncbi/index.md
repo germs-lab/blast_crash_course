@@ -1,7 +1,7 @@
 =================================================
 So you want to start using that big data in NCBI?
 =================================================
-Authored by: Adina Howe & Fan Yang; MODIFIED from a previous [tutorial](http://blast-tutorial.readthedocs.io/en/latest/ncbi/index.html)
+Authored by: Fan Yang & Adina Howe; MODIFIED from a previous [tutorial](http://blast-tutorial.readthedocs.io/en/latest/ncbi/index.html)
 
 ***
 EDAMAME tutorials have a CC-BY [license](https://github.com/edamame-course/2015-tutorials/blob/master/LICENSE.md). _Share, adapt, and attribute please!_
