@@ -39,23 +39,17 @@ Get the metagenome datasets and scripts related to this tutorial.
 
 All the tutorial materials are contained on a Github repository.  The reason for using Github is that this material can be updated by me and grabbed by you lucky folk seamlessly with just a couple commands.  If you are interested in learning more about Git, see this [tutorial](http://git-lectures.github.io/):
 
-    ```
     git clone https://github.com/adina/bodega-howe-ncbi.git
-    ```
  
 This command will make a directory (or folder for those more Finder/Explorer inclined) named "bodega-howe-ncbi" in the location where it was run.  Within that directory, there will be two directories containing "data" and "scripts".  You can see this by navigating (hint:  cd) to the "bodega-howe-ncbi" directory and typing:
-
-    ```
+    
     ls -lah
-    ```
 
 Task 2
 ------
 Navigate to the data directory and identify the number of sequences in each file.  Hint:  To find specific characters in a file, you can use [grep](http://www.gnu.org/software/grep/manual/html_node/Usage.html).  For example, to find all instances of AGTC in the corn.fa file, we could:
 
-    ```
     grep AGTC corn.fa
-    ```
 
 To find sequences, we know that each sequence will start with a special character, ">".  This character in the shell, remember, is a bit special.  So to find it as a symbol in the text, we're going to put a '^' right before it in quotes:
 
@@ -105,7 +99,7 @@ Task 5
 ------
 Find that file on your computer and give it a peek.  If you're feeling up for it, transfer it to your EC2 instance (hint:  scp).
 
-To make this tutorial not-as-painful to complete in a reasonable amount of time, I've also made a list of 300 nifH genes from NCBI and put them in a file `#300-nifh-genes.txt#` in the data directory.  I would highly suggest you use this gene to build your database going forward in this tutorial.
+To make this tutorial not-as-painful to complete in a reasonable amount of time, I've also made a list of 300 nifH genes from NCBI and put them in a file `**300-nifh-genes.txt**` in the data directory.  I would highly suggest you use this gene to build your database going forward in this tutorial.
 
 Task 6
 ------
@@ -131,9 +125,9 @@ Scaling "Getting the Data" On Up
 
 Here's some [answers](http://stackoverflow.com/questions/7440379/what-exactly-is-the-meaning-of-an-api) on what exactly is API, among which my favorite is "an interface through which you access someone else's code or through which someone else's code accesses yours -- in effect the public methods and properties."
 
-The NCBI has a whole toolkit which they call #Entrez Programming Utilities# or #eutils# for short.  You can read all about it in the [documentation](http://www.ncbi.nlm.nih.gov/books/NBK25501/).  There are a lot of things you can do to interface with all things NCBI, including publications, etc., but I am going to focus today on downloading sequencing data. NCBI has also developed [Entrez Direct](http://www.ncbi.nlm.nih.gov/news/02-06-2014-entrez-direct-released/) to directly access, parse, and dowload from NCBI databases from command line.
+The NCBI has a whole toolkit which they call **Entrez Programming Utilities** or **eutils** for short.  You can read all about it in the [documentation](http://www.ncbi.nlm.nih.gov/books/NBK25501/).  There are a lot of things you can do to interface with all things NCBI, including publications, etc., but I am going to focus today on downloading sequencing data. NCBI has also developed [Entrez Direct](http://www.ncbi.nlm.nih.gov/news/02-06-2014-entrez-direct-released/) to directly access, parse, and dowload from NCBI databases from command line.
 
-Today we are going to focus on how to obtain sequence files using `curl` or `wget` and eutil web links from command line. To do this, you're going to be using one tool in #eutils#, called #efetch#.  There is a whole chapter devoted to [efetch](http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.EFetch] -- when I first started doing this kind of work, this documentation always broke my heart.  Its easier for me to just show you how to use it.
+Today we are going to focus on how to obtain sequence files using `curl` or `wget` and eutil web links from command line. To do this, you're going to be using one tool in **eutils**, called **efetch**.  There is a whole chapter devoted to [efetch](http://www.ncbi.nlm.nih.gov/books/NBK25499/**chapter4.EFetch] -- when I first started doing this kind of work, this documentation always broke my heart.  Its easier for me to just show you how to use it.
 
 Task 8
 ------
@@ -145,7 +139,7 @@ Task 9
 
 Download the gene with eutils commands in your web-browser and take a look at the file.
 
-On your web-browser, paste the following URL to download the nucleotide genome for gene #X51500.1i#:   
+On your web-browser, paste the following URL to download the nucleotide genome for gene **X51500.1i**:   
     ```
     http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=X51500.1&rettype=fasta&retmode=text
     ```
@@ -168,7 +162,7 @@ Do you notice the difference in these two commands?  Let's breakdown the command
 
 Also, a useful command is also `version=1`.  There are different versions of sequences and some times that is useful.  For reproducibility, I try to specify versions in my queries, see these [comments](http://www.ncbi.nlm.nih.gov/Class/MLACourse/Modules/Format/exercises/qa_accession_vs_gi.html).
 
-#Note:#
+**Note:**
 
    Notice the "&" that comes between each of these little commands, it is necessary and important.
 
@@ -208,17 +202,17 @@ Run this script (note that your paths for the script or data may need to be spec
 
 Sit back and think of the glory that is happening on your screen right now...
 
-#Note:#
+**Note:**
 
     If you are nervous....you may want to run this on just a few of these IDs to begin with.  You can create a smaller list using the *head* command with the -n parameter in the shell.  For example, `head -n 3 300-nifh-genes.txt > 3genes.txt`.
 
 Task 12b
 --------
-After all the 300 genes are downloaded, you will want to concatenate them into one file (Hint: `cat` and `>>`), named "#all-nifH.fa#".
+After all the 300 genes are downloaded, you will want to concatenate them into one file (Hint: `cat` and `>>`), named "**all-nifH.fa**".
 
 Task 13
 -------
-Look at the script/program content in "#fetch-genomes-fasta.py#".
+Look at the script/program content in "**fetch-genomes-fasta.py**".
 
 The meat of this script uses the following code:    
     ```
@@ -259,9 +253,9 @@ Next steps, what's next
 
 Let's step back.  What is the reason for annotating your genes?  You want to get an idea of what genes are in each soil metagenome as well as a quantitative estimate of each gene.   Eventually, you would likely use this information to do some statistical analyses -- maybe in sophisticated packages like Qiime, Mothur, or Phyloseq.  All these programs take similar inputs, and the big secret is knowing what they are and how to parse/move/shift/wrangel this information into the specific format needed for each program:
 
-#. Metadata/Environmental data - What treatment does corn.fa represent -- duh, corn!  When was it sampled?  What kind of other data have you collected on this sample (amount of fertilizer, etc).
-#. Annotation information - What are the corresponding annotations to whatever shortcut ID associated with your genes (e.g., GI number).  This file can also contain some ontology / hierarchical information (e.g., Taxonomy domains / phyla / species).
-#. Abundance estimates - What are the estimates of each gene in each metagenome sample.
+**. Metadata/Environmental data - What treatment does corn.fa represent -- duh, corn!  When was it sampled?  What kind of other data have you collected on this sample (amount of fertilizer, etc).
+**. Annotation information - What are the corresponding annotations to whatever shortcut ID associated with your genes (e.g., GI number).  This file can also contain some ontology / hierarchical information (e.g., Taxonomy domains / phyla / species).
+**. Abundance estimates - What are the estimates of each gene in each metagenome sample.
 
 Of these, you should be able to make a metadata file for your experiment.  The annotation file can be provided by your database.
 
