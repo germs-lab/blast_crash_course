@@ -52,7 +52,7 @@ This command will make a directory (or folder for those more Finder/Explorer inc
     
     ls -lah
 
-This [totorial](https://github.com/germs-lab/tutorial-blast-annotation/blob/master/ncbi/index.md) is located in directory "ncbi". There are many more for you to explore on your own. 
+This [tutorial](https://github.com/germs-lab/tutorial-blast-annotation/blob/master/ncbi/index.md) is located in directory "ncbi". There are many more for you to explore on your own. 
 
 Task 2
 ------
