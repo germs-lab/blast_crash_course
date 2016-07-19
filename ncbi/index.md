@@ -37,13 +37,15 @@ Task 1
 ------
 Get the metagenome datasets and scripts related to this tutorial.
 
-All the tutorial materials are contained on a Github repository.  The reason for using Github is that this material can be updated by me and grabbed by you lucky folk seamlessly with just a couple commands.  If you are interested in learning more about Git, see this [tutorial](http://git-lectures.github.io/):
+All the tutorial materials are contained on a Github repository.  The reason for using Github is that this material can be updated by me and grabbed by you lucky folk seamlessly with just a couple commands.  To refresh your memmory, [here](https://github.com/edamame-course/Github/blob/master/Tutorial.md) is Jackson's github tutorial. If you are interested in learning more about Git, see this [tutorial](http://git-lectures.github.io/) also. Now, let's get some play data:     
 
-    git clone https://github.com/adina/bodega-howe-ncbi.git
+    git clone https://github.com/germs-lab/tutorial-blast-annotation
  
-This command will make a directory (or folder for those more Finder/Explorer inclined) named "bodega-howe-ncbi" in the location where it was run.  Within that directory, there will be two directories containing "data" and "scripts".  You can see this by navigating (hint:  cd) to the "bodega-howe-ncbi" directory and typing:
+This command will make a directory (or folder for those more Finder/Explorer inclined) named "tutorial-blast-annotation" in the location where it was run.  Within that directory, there will be two directories named "data" and "ncbi".  You can see this by navigating (hint:  cd) to the "tutorial-blast-annotation" directory and typing:
     
     ls -lah
+
+This totorial is located in directory ["ncbi"](https://github.com/germs-lab/tutorial-blast-annotation/blob/master/ncbi/index.md). There are many more for you to explore on your own. 
 
 Task 2
 ------
@@ -192,9 +194,8 @@ Run this script (note that your paths for the script or data may need to be spec
 
 Sit back and think of the glory that is happening on your screen right now...
 
-**Note:**
-
-    If you are nervous....you may want to run this on just a few of these IDs to begin with.  You can create a smaller list using the *head* command with the -n parameter in the shell.  For example, `head -n 3 300-nifh-genes.txt > 3genes.txt`.
+**Note:**    
+If you are nervous....you may want to run this on just a few of these IDs to begin with.  You can create a smaller list using the *head* command with the -n parameter in the shell.  For example, `head -n 3 300-nifh-genes.txt > 3genes.txt`.
 
 Task 12b
 --------
