@@ -228,9 +228,6 @@ To blast, you will need to:
 
 Also please see Tracy Teal's tutorial [here](https://github.com/edamame-course/BLAST-tutorial/blob/master/running-BLAST.md) for reference.
 
-**Note:**   
-You will also need a more powerful instance. 
-
 
 ==========
 Conclusion
