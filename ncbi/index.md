@@ -35,7 +35,10 @@ Getting the Data
 
 Task 1
 ------
-Get the metagenome datasets and scripts related to this tutorial.
+Get the metagenome datasets and scripts related to this tutorial. Don't forget, you will need to install "*git*".   
+
+    sudo apt-get install git
+
 
 All the tutorial materials are contained on a Github repository.  The reason for using Github is that this material can be updated by me and grabbed by you lucky folk seamlessly with just a couple commands.  To refresh your memmory, [here](https://github.com/edamame-course/Github/blob/master/Tutorial.md) is Jackson's github tutorial. If you are interested in learning more about Git, see this [tutorial](http://git-lectures.github.io/) also. Now, let's get some play data:     
 
@@ -45,7 +48,7 @@ This command will make a directory (or folder for those more Finder/Explorer inc
     
     ls -lah
 
-This totorial is located in directory ["ncbi"](https://github.com/germs-lab/tutorial-blast-annotation/blob/master/ncbi/index.md). There are many more for you to explore on your own. 
+This [totorial](https://github.com/germs-lab/tutorial-blast-annotation/blob/master/ncbi/index.md) is located in directory "ncbi". There are many more for you to explore on your own. 
 
 Task 2
 ------
