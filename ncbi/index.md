@@ -1,7 +1,11 @@
 =================================================
 So you want to start using that big data in NCBI?
 =================================================
-Authored by: Adina Howe & Fan Yang
+Authored by: Adina Howe & Fan Yang; MODIFIED from a previous [tutorial](http://blast-tutorial.readthedocs.io/en/latest/ncbi/index.html)
+
+***
+EDAMAME tutorials have a CC-BY [license](https://github.com/edamame-course/2015-tutorials/blob/master/LICENSE.md). _Share, adapt, and attribute please!_
+***
 
 ===================
 Learning objectives
@@ -27,7 +31,7 @@ You have been delivered three dogma-changing metagenomes (sequencing datasets) o
 Your tools
 ==========
 
-Get your EC2 instance going - you need an Ubuntu 14.0 based instance (64-bit) with the free tier, t2.micro.
+Get your EC2 instance going - you need an Ubuntu 14.0 based instance (64-bit) with m3.large.
 
 ================
 Getting the Data
