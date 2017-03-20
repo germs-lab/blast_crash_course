@@ -108,21 +108,17 @@ Go to the NCBI webpage and identify an estimate of total nifH genes and download
 
 You'll want to navigate in a web-browser to the http://www.ncbi.nlm.nih.gov/.  You'll see in the search query box that you can search a number of databases.  Here, we want to look at the nucleotide database and query something along the lines of nifH or nitrogen fixation.
 
-When I did this, there were nearly 180,000 genes that were hit by this query.  You will want to look for the "Send To" link at the upper right of the page (put on a magnifying glass!), and download the GI list for this query.
+When I did this, there were nearly 180,000 genes that were hit by this query.  You will want to look for the "Send" link at the upper right of the page (put on a magnifying glass!), and explore what you can download for this gene query.  For this tutorial, let's download the NCBI ID numbers associated with your genes as a list of numbers.  [Send --> Complete Record --> File --> Format --> GI List].  Note that you can also download the FASTA sequences of the genes directly with this method -- can you imagine a situation where this wouldn't be as efficient?
 
 Task 5
 ------
-Find that file on your computer and give it a peek.  If you're feeling up for it, transfer it to your EC2 instance (hint:  scp).
+Find that file on your computer and give it a peek.  If you're feeling up for it, transfer it to your EC2 instance (hint:  [scp](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html)).
 
-To make this tutorial not-as-painful to complete in a reasonable amount of time, I've also made a list of 300 nifH genes from NCBI and put them in a file '300-nifh-genes.txt' in the data directory.  I would highly suggest you use this gene to build your database going forward in this tutorial.
+To make this tutorial not-as-painful to complete in a reasonable amount of time, I've also made a list of 300 nifH genes from NCBI and put them in a file '300-nifh-genes.txt' in the data directory.  *I would highly suggest you use this gene to build your database going forward in this tutorial.*
 
 Task 6
 ------
 Take a look at this file.  Prove to yourself that it contains 300 genes (Hint:  wc)
-
-.. Note::
-
-    Some of these hits, I am sure, are likely not nifH.  Typically, I would do some clean up of these genes to filter out any annotation that did not contain "nifH".  In case you're interested, this script is in the scripts directory and is called "clean-up.py".  You are welcome to play with it.  Here's the command:  python clean-up.py <fasta-file-uncleaned> > <fasta-file-cleaned>
 
 
 Now, we are going to learn how to download these genes (by learning about the NCBI API below)
