@@ -40,7 +40,7 @@ Then...::
 And finally...::
 
     pip install screed
-    curl -O ftp://ftp.ncbi.nih.gov/blast/executables/release/2.2.26/blast-2.2.26-x64-linux.tar.gz
+    curl -O ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.6.0+-src.tar.gz
     tar xzf blast-2.2.26-x64-linux.tar.gz
     cp blast-2.2.26/bin/* /usr/local/bin
     cd /home/ubuntu
