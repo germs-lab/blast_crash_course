@@ -148,7 +148,7 @@ To do this, you're going to be using one tool in *eutils*, called *efetch*.  The
 Task 8
 ------
 
-Open a web browser, and check out what NCBI knows about this gene.  Check it out `here <http://www.ncbi.nlm.nih.gov/nuccore/X51500.1>`_.
+Open a web browser, and check out what NCBI knows about this gene.  Check it out `here <https://www.ncbi.nlm.nih.gov/nuccore/X51500.1>`_.
 
 Task 9
 ------
@@ -157,7 +157,7 @@ Download the gene with eutils commands in your web-browser and take a look at th
 
 On your web-browser, paste the following URL to download the nucleotide genome for gene X51500.1::
 
-    http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=X51500.1&rettype=fasta&retmode=text
+    https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=X51500.1&rettype=fasta&retmode=text
 
 Task 10
 -------
@@ -188,32 +188,31 @@ Download a gene sequence on the command line.
 
 Going back onto your instance, in the shell, you could run the same commands above with the addition of *curl* on your EC2 instance::
 
-    curl "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=X51500.1&rettype=fasta&retmode=text"
+    curl "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=X51500.1&rettype=fasta&retmode=text"
 
 You'll see it fly on to your screen.  Don't panic - you can save it to a file and make it more useful BUT note the path you are in and where you will save this file (as long as you know...that's fine)::
 
-    curl "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=X51500.1&rettype=fasta&retmode=text" > X51500.1.fa
+    curl "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=X51500.1&rettype=fasta&retmode=text" > X51500.1.fa
 
-You could now imagine writing a program where you made a list of IDs you want to download and put it in a for loop, *curling* each genome and saving it to a file.  The following is a `script <https://github.com/adina/tutorial-ngs-2014/blob/master/ncbi/fetch-genomes.py>`_.  Thanks to Jordan Fish who gave me the original version of this script before I even knew how and made it easy to use.
+You could now imagine writing a program where you made a list of IDs you want to download and put it in a for loop, *curling* each genome and saving it to a file.  The following is a `script <https://github.com/adina/isu-bcb-546x/blob/master/scripts/fetch-genomes.py>`_.  Thanks to Jordan Fish who gave me the original version of this script before I even knew how and made it easy to use.
 
 To see the documentation for this script in the scripts directory::
 
-    python fetch-genomes-fasta.py
+    python fetch-genomes.py
 
 You'll see that you need to provide a list of IDs and a directory where you want to save the downloaded files.
 
 Task 12a
 --------
-
-Run this script (note that your paths for the script or data may need to be specified) -- also see note below::
-
-    python scripts/fetch-genomes-fasta.py data/300-nifh-genes.txt data/nifh-database-fastas
-
-Sit back and think of the glory that is happening on your screen right now...
-
 .. Note::
 
     If you are nervous....you may want to run this on just a few of these IDs to begin with.  You can create a smaller list using the *head* command with the -n parameter in the shell.  For example, head -n 3 300-nifh-genes.txt > 3genes.txt.
+
+Run this script (note that your paths for the script or data may need to be specified) -- also see note below::
+
+    python scripts/fetch-genomes.py data/300-nifh-genes.txt data/nifh-database-fastas
+
+Sit back and think of the glory that is happening on your screen right now...
 
 Task 12b
 --------
@@ -221,11 +220,11 @@ After all the 300 genes are downloaded, you will want to concatenate them into o
 
 Task 13
 -------
-Look at the script/program content in "fetch-genomes-fasta.py".
+Look at the script/program content in "fetch-genomes.py".
 
 The meat of this script uses the following code::
 
-    url_template = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nucleotide&id=%s&rettype=gb&retmode=text"
+    url_template = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nucleotide&id=%s&rettype=fasta&retmode=text"
 
 You'll see that the *id* here is a string character which is obtained from list of IDs contained in a separate file.  The rest of the script manages where the files are being placed and what they are named.  It also prints some output to the screen so you know its running.
 
@@ -241,15 +240,23 @@ So there are lots of ways to do this and arguably "blasting" is one of the most 
 
 Task 15
 -------
-Format your nifH database for BLAST and then perform an alignment (with BLAST) of your metagenomes against your new database.  You should also add your lit search genes (those 30 genes) into your NCBI downloaded genes if you're up to the challenge -- it takes a couple steps.  I would suggest something like the following variables::
+Format your nifH database for BLAST and then perform an alignment (with BLAST) of your metagenomes against your new database:: 
 
-    blastall -i <metagenome file> -d <nifh-db> -m 8 -a 8 -p blastn -o <metag.blastnout.m8> -b 1 -e 1e-5
+    makeblastdb -in <nifh-db> -dbtype nucl -out <nifh-db>
+    
+You should also add your lit search genes (those 30 genes) into your NCBI downloaded genes if you're up to the challenge -- it takes a couple steps.  Now, run your blast. 
+
+I would suggest something like the following variables, note that the outfmt flag identifies a tabular output::
+
+    blastn -query <metag file> -db <db file> -out <name of output> -outfmt 6
 
 This takes a bit of time...so stretch a bit.  Like all good bioformaticians, you should go do something fun while the computer does all the work.  If you want to see it running, try using the "top" command.
 
 .. Note::
 
-    `BLAST initiation or refresher tutorial <http://angus.readthedocs.org/en/2014/running-command-line-blast.html>`_.  I have put a cheatsheet of the commands I used in the scripts directory -- if you need another hint.
+    `BLAST initiation or refresher tutorial <http://angus.readthedocs.org/en/2014/running-command-line-blast.html>`_.  
+
+Make sure you've created a blast output for each of the metagenomes in the tutorial.
 
 Task 16
 -------
