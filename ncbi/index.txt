@@ -55,15 +55,15 @@ Get the metagenome datasets and scripts related to this tutorial.
 
 All the tutorial materials are contained on a Github repository.  The reason for using Github is that this material can be updated by me and grabbed by you lucky folk seamlessly with just a couple commands.  If you are interested in learning more about Git, see these [tutorials]()::
 
-    git clone https://github.com/adina/bodega-howe-ncbi.git
+    git clone https://github.com/adina/isu-bcb-546x.git
 
-This command will make a directory (or folder for those more Finder/Explorer inclined) named "bodega-howe-ncbi" in the location where it was run.  Within that directory, there will be two directories containing "data" and "scripts".  You can see this by navigating (hint:  cd) to the "bodega-howe-ncbi" directory and typing::
+This command will make a directory (or folder for those more Finder/Explorer inclined) named "isu-bcb-546x" in the location where it was run.  Within that directory, there will be two directories containing "data" and "scripts".  You can see this by navigating (hint:  cd) to the "isu-bcb-546x" directory and typing::
 
     ls -lah
 
 Task 2
 ------
-Navigate to the data directory and identify the number of sequences in each file.  Hint:  To find specific characters in a file, you can use [grep](http://www.gnu.org/software/grep/manual/html_node/Usage.html).  For example, to find all instances of AGTC in the corn.fa file, we could::
+Navigate to the data/metags directory and identify the number of sequences in each file.  Hint:  To find specific characters in a file, you can use [grep](http://www.gnu.org/software/grep/manual/html_node/Usage.html).  For example, to find all instances of AGTC in the corn.fa file, we could::
 
     grep AGTC corn.fa
 
@@ -79,7 +79,7 @@ Or...if you want to do this quicky::
 
     for x in *fa; do echo $x; grep ^">" $x | wc; done
 
-To identify nitrogen fixation genes, you've been tasked to build a database of all previously observed known nitrogen fixation genes (nifH).  To build this database, you have been reading literature for about two weeks and come up with a list of about 30 genes:
+To identify nitrogen fixation genes, you've been tasked to build a database of all previously observed known nitrogen fixation genes (nifH).  To build this database, you have been reading literature for about two weeks and come up with a list of about 50 genes:
 
 gi|985477984|emb|LN997366.1|
 
@@ -95,11 +95,10 @@ gi|38679|emb|X51500.1|
 
 gi|470075|emb|Z31716.1|
 
-You'll also see this list in a file in the data directory (hint:  use cat).
 
 Task 3
 ------
-Check out the file containing these gene IDs.
+Check out the file containing these gene IDs, its in the data directory - nifh-ref.fa.
 
 You have a sinking feeling like this isn't really leveraging the big data biology that everyone says sequencing technologies have provided.  You've decided to check out NCBI for its contents.
 
