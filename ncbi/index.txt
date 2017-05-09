@@ -55,7 +55,7 @@ Get the metagenome datasets and scripts related to this tutorial.
 
 All the tutorial materials are contained on a Github repository.  The reason for using Github is that this material can be updated by me and grabbed by you lucky folk seamlessly with just a couple commands.  If you are interested in learning more about Git, see these [tutorials]()::
 
-    git clone https://github.com/adina/isu-bcb-546x.git
+    git clone https://github.com/adina/cibnor-2017
 
 This command will make a directory (or folder for those more Finder/Explorer inclined) named "isu-bcb-546x" in the location where it was run.  Within that directory, there will be two directories containing "data" and "scripts".  You can see this by navigating (hint:  cd) to the "isu-bcb-546x" directory and typing::
 
