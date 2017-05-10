@@ -161,7 +161,7 @@ To do this, you're going to be using one tool in *eutils*, called *efetch*.  The
 Task 8
 ------
 
-Open a web browser, and check out what NCBI knows about this gene.  Check it out `here <https://www.ncbi.nlm.nih.gov/nuccore/X51500.1>`_.
+Open a web browser, and check out what NCBI knows about a gene.  Check it out `here <https://www.ncbi.nlm.nih.gov/nuccore/X51500.1>`_.
 
 Task 9
 ------
