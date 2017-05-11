@@ -219,7 +219,8 @@ Task 12a
 --------
 .. Note::
 
-    If you are nervous....you may want to run this on just a few of these IDs to begin with.  You can create a smaller list using the *head* command with the -n parameter in the shell.  For example, head -n 3 300-nifh-genes.txt > 3genes.txt.
+    If you are nervous....you may want to run this on just a few of these IDs to begin with.  You can create a smaller list using the *head* command with the -n parameter in the shell.  For example, head -n 3 300-nifh-genes.txt > 3genes.txt.  Please note that you will have to think about WHERE to run this script.  This command, for example, is written to be run in the /home/training/cibnor-2017
+directory.  
 
 Run this script (note that your paths for the script or data may need to be specified) -- also see note below::
 
@@ -295,7 +296,7 @@ Perhaps the most difficult is to get the abundance estimates.  Intuitively, you 
 
 Task 17
 -------
-Produce an abundance table of all genes in your 3 metagenomes::
+Produce an abundance table of all genes in your 3 metagenomes.  You should call this command with "paths" in mind...where are your blast output files::
 
     python count-up.py <all your blast output files>
 
