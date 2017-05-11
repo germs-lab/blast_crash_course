@@ -279,7 +279,7 @@ I would suggest something like the following variables, note that the outfmt fla
 
     blastn -query <metag file> -db <db file> -out <name of output> -outfmt 6
     
-    blastn -query metags/corn.fa -db nifh-database-fastas/all-nifH-db.fa -out blast-output.txt -outfmt 6
+    blastn -query metags/corn.fa -db nifh-database-fastas/all-nifH-db.fa -out corn-blast-output.txt -outfmt 6
 
 
 This takes a bit of time...so stretch a bit.  Like all good bioformaticians, you should go do something fun while the computer does all the work.  If you want to see it running, try using the "top" command.
@@ -290,10 +290,15 @@ This takes a bit of time...so stretch a bit.  Like all good bioformaticians, you
 
 Make sure you've created a blast output for each of the metagenomes in the tutorial.
 
+    for x in metags/*fa; do blastn -query $x -db nifh-database-fastas/all-nifH-db.fa -out $x-blast-output.txt -outfmt 6; done
+
+    
 Task 16
 -------
 Examine your blast outputs.  What do the first few lines contain?  How many hits do you have per metagenome to your database?
 
+    cd metags
+    ls
 =======================
 Next steps, what's next
 =======================
@@ -314,13 +319,10 @@ Task 17
 -------
 Produce an abundance table of all genes in your 3 metagenomes.  You should call this command with "paths" in mind...where are your blast output files::
 
-    python count-up.py <all your blast output files>
+    cd /home/training/cibnor-2017/data/metags
+    python ../../scripts/count-up.py *txt
 
-For example::
-
-    python scripts/count-up.py  data/*blastnout
-
-This script produces a file, 'summary-count.tsv'.
+This script produces a file, 'summary-count.tsv'.  Can you read it?
 
 Task 18
 -------
@@ -332,13 +334,13 @@ Often, I get really excited and need to know what gene is associated with each G
 
     python import-ann.py <blast database fasta file> summary-count.tsv > <output file>
 
-For example::
-
-    python import-ann.py nif-genes.fa summary-count.tsv > summary-count-annotated.tsv
+    python ../../scripts/import-ann.py ../nifh-database-fastas/all-nifH.fa summary-count.tsv > summary-count-ann.tsv
 
 Task 20
 -------
-Transfer the annotated file over to your laptop and open it in Excel.
+Transfer the annotated file over to your laptop and open it in Excel.  
+
+    mv summary-count-ann.tsv ~/.
 
 ==========
 Conclusion
