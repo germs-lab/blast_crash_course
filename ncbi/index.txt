@@ -61,14 +61,18 @@ All the tutorial materials are contained on a Github repository.  The reason for
 
     git clone https://github.com/adina/cibnor-2017
 
-This command will make a directory (or folder for those more Finder/Explorer inclined) named "isu-bcb-546x" in the location where it was run.  Within that directory, there will be two directories containing "data" and "scripts".  You can see this by navigating (hint:  cd) to the "cibnor-2017" directory and typing::
+This command will make a directory (or folder for those more Finder/Explorer inclined) named "cibnor-2017" in the location where it was run.  Within that directory, there will be two directories containing "data" and "scripts".  You can see this by navigating (hint:  cd) to the "cibnor-2017" directory and typing::
 
+    cd cibnor-2017
     ls -lah
 
 Task 2 - Explore the data
 -------------------------
 Navigate to the data/metags directory and identify the number of sequences in each file.  Hint:  To find specific characters in a file, you can use [grep](http://www.gnu.org/software/grep/manual/html_node/Usage.html).  For example, to find all instances of AGTC in the corn.fa file, we could::
 
+    cd data
+    cd metags
+    ls
     grep AGTC corn.fa
 
 To find sequences, we know that each sequence will start with a special character, ">".  This character in the shell, remember, is a bit special.  So to find it as a symbol in the text, we're going to put a '^' right before it in quotes::
@@ -205,13 +209,15 @@ Going back onto your instance, in the shell, you could run the same commands abo
 
 You'll see it fly on to your screen.  Don't panic - you can save it to a file and make it more useful BUT note the path you are in and where you will save this file (as long as you know...that's fine)::
 
+    cd /home/training/cibnor-2017/data
+
     curl "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=X51500.1&rettype=fasta&retmode=text" > X51500.1.fa
 
 You could now imagine writing a program where you made a list of IDs you want to download and put it in a for loop, *curling* each genome and saving it to a file.  The following is a `script <https://github.com/adina/cibnor-2017/blob/master/scripts/fetch-genomes.py>`_.  Thanks to Jordan Fish who gave me the original version of this script before I even knew how and made it easy to use.
 
 To see the documentation for this script in the scripts directory::
 
-    python fetch-genomes.py
+    python ../scripts/fetch-genomes.py
 
 You'll see that you need to provide a list of IDs and a directory where you want to save the downloaded files.
 
@@ -223,14 +229,18 @@ Task 12a
 directory.  
 
 Run this script (note that your paths for the script or data may need to be specified) -- also see note below::
-
-    python scripts/fetch-genomes.py data/300-nifh-genes.txt data/nifh-database-fastas
+    
+    cd /home/training/cibnor-2017/data
+    python ../scripts/fetch-genomes.py 300-nifh-genes.txt nifh-database-fastas
 
 Sit back and think of the glory that is happening on your screen right now...
 
 Task 12b
 --------
-After all the 300 genes are downloaded, you will want to concatenate them into one file (Hint cat and >>), named "all-nifH.fa".
+After all the 300 genes are downloaded, you will want to concatenate them into one file, named "all-nifH.fa"::
+
+    cd nifh-database-fastas
+    cat *fa > all-nifH.fa
 
 Task 13
 -------
@@ -260,11 +270,17 @@ Format your nifH database for BLAST and then perform an alignment (with BLAST) o
 
     makeblastdb -in <nifh-db> -dbtype nucl -out <nifh-db>
     
+    cd /home/training/cibnor-2017/data
+    makeblastdb -in nifh-database-fastas/all-nifH.fa -dbtype nucl -out nifh-database-fastas/all-nifH-db.fa
+    
 You should also add your lit search genes (those 30 genes) into your NCBI downloaded genes if you're up to the challenge -- it takes a couple steps.  Now, run your blast. 
 
 I would suggest something like the following variables, note that the outfmt flag identifies a tabular output::
 
     blastn -query <metag file> -db <db file> -out <name of output> -outfmt 6
+    
+    blastn -query metags/corn.fa -db nifh-database-fastas/all-nifH-db.fa -out blast-output.txt -outfmt 6
+
 
 This takes a bit of time...so stretch a bit.  Like all good bioformaticians, you should go do something fun while the computer does all the work.  If you want to see it running, try using the "top" command.
 
