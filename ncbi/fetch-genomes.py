@@ -4,14 +4,24 @@ import urllib2
 import os
 import sys
 import time
+import errno
+
+def mkdir_p(path):
+    try:
+        os.makedirs(path)
+    except OSError as exc:  # Python >2.5
+        if exc.errno == errno.EEXIST and os.path.isdir(path):
+            pass
+        else:
+            raise
 
 if len(sys.argv) != 3:
-    print "USAGE: fetch_genome.py <genome_id_list> <out_dir>"
+    print "USAGE: fetch-genomes.py <genome_id_list> <out_dir>"
     sys.exit(1)
 
-url_template = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nucleotide&id=%s&rettype=gb&retmode=text"
+url_template = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nucleotide&id=%s&rettype=fasta&retmode=text"
 
-os.mkdir(sys.argv[2])
+mkdir_p(sys.argv[2])
 
 for id in open(sys.argv[1]):
     id = id.strip()
