@@ -209,7 +209,7 @@ Going back onto your instance, in the shell, you could run the same commands abo
 
 You'll see it fly on to your screen.  Don't panic - you can save it to a file and make it more useful BUT note the path you are in and where you will save this file (as long as you know...that's fine)::
 
-    cd /home/training/cibnor-2017/data
+    cd /home/ubuntu/cibnor-2017/data
 
     curl "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=X51500.1&rettype=fasta&retmode=text" > X51500.1.fa
 
@@ -225,12 +225,12 @@ Task 12a
 --------
 .. Note::
 
-    If you are nervous....you may want to run this on just a few of these IDs to begin with.  You can create a smaller list using the *head* command with the -n parameter in the shell.  For example, head -n 3 300-nifh-genes.txt > 3genes.txt.  Please note that you will have to think about WHERE to run this script.  This command, for example, is written to be run in the /home/training/cibnor-2017
+    If you are nervous....you may want to run this on just a few of these IDs to begin with.  You can create a smaller list using the *head* command with the -n parameter in the shell.  For example, head -n 3 300-nifh-genes.txt > 3genes.txt.  Please note that you will have to think about WHERE to run this script.  This command, for example, is written to be run in the /home/ubuntu/cibnor-2017
 directory.  
 
 Run this script (note that your paths for the script or data may need to be specified) -- also see note below::
     
-    cd /home/training/cibnor-2017/data
+    cd /home/ubuntu/cibnor-2017/data
     python ../scripts/fetch-genomes.py 300-nifh-genes.txt nifh-database-fastas
 
 Sit back and think of the glory that is happening on your screen right now...
@@ -270,7 +270,7 @@ Format your nifH database for BLAST and then perform an alignment (with BLAST) o
 
     makeblastdb -in <nifh-db> -dbtype nucl -out <nifh-db>
     
-    cd /home/training/cibnor-2017/data
+    cd /home/ubuntu/cibnor-2017/data
     makeblastdb -in nifh-database-fastas/all-nifH.fa -dbtype nucl -out nifh-database-fastas/all-nifH-db.fa
     
 You should also add your lit search genes (those 30 genes) into your NCBI downloaded genes if you're up to the challenge -- it takes a couple steps.  Now, run your blast. 
@@ -319,7 +319,7 @@ Task 17
 -------
 Produce an abundance table of all genes in your 3 metagenomes.  You should call this command with "paths" in mind...where are your blast output files::
 
-    cd /home/training/cibnor-2017/data/metags
+    cd /home/ubuntu/cibnor-2017/data/metags
     python ../../scripts/count-up.py *txt
 
 This script produces a file, 'summary-count.tsv'.  Can you read it?
