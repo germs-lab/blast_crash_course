@@ -279,6 +279,8 @@ I would suggest something like the following variables, note that the outfmt fla
 
     blastn -query <metag file> -db <db file> -out <name of output> -outfmt 6
     
+    cd /home/ubuntu/cibnor-2017/data
+    
     blastn -query metags/corn.fa -db nifh-database-fastas/all-nifH-db.fa -out corn-blast-output.txt -outfmt 6
 
 
@@ -295,10 +297,11 @@ Make sure you've created a blast output for each of the metagenomes in the tutor
     
 Task 16
 -------
-Examine your blast outputs.  What do the first few lines contain?  How many hits do you have per metagenome to your database?
+Examine your blast outputs.  What do the first few lines contain?  How many hits do you have per metagenome to your database?::
 
     cd metags
     ls
+    
 =======================
 Next steps, what's next
 =======================
@@ -338,7 +341,7 @@ Often, I get really excited and need to know what gene is associated with each G
 
 Task 20
 -------
-Transfer the annotated file over to your laptop and open it in Excel.  
+Transfer the annotated file over to your laptop and open it in Excel.:: 
 
     mv summary-count-ann.tsv ~/.
 
