@@ -26,7 +26,8 @@ You have been delivered three dogma-changing metagenomes (sequencing datasets) o
 Your tools
 ==========
 
-Get your EC2 instance going - you need an Ubuntu 14.0 based instance (64-bit) with at least 4 cores.
+Get your EC2 instance going - you need an Ubuntu 14.0 based instance (64-bit) with at least 4 cores.  This tutorial was run on 6/26/2018 on ami-a4dc46db.
+
 Then install the software::
 
     sudo bash
@@ -121,13 +122,12 @@ Go to the NCBI webpage and identify an estimate of total nifH genes and download
 
 You'll want to navigate in a web-browser to the http://www.ncbi.nlm.nih.gov/.  You'll see in the search query box that you can search a number of databases.  Here, we want to look at the nucleotide database and query something along the lines of nifH or nitrogen fixation.
 
-When I did this, there were nearly 180,000 genes that were hit by this query.  You will want to look for the "Send" link at the upper right of the page (put on a magnifying glass!), and explore what you can download for this gene query.  For this tutorial, let's download the NCBI ID numbers associated with your genes as a list of numbers.  [Send --> Complete Record --> File --> Format --> GI List].  Note that you can also download the FASTA sequences of the genes directly with this method -- can you imagine a situation where this wouldn't be as efficient?
+When I did this, there were hundreds of genes that were hit by this query.  Click on the "Genes", and you will want to look for the "Send to" link at the upper right of the page (put on a magnifying glass!), and explore what you can download for this gene query.  For this tutorial, let's download the NCBI ID numbers associated with your genes as a list of numbers.  [Send --> Complete Record --> File --> Format --> Accession List].  Find the file you downloaded on your computer and give it a peek.  Note that you can also download the FASTA sequences of the genes directly with this method -- can you imagine a situation where this wouldn't be as efficient?
 
 Task 5
 ------
-Find that file on your computer and give it a peek.  
 
-To make this tutorial not-as-painful to complete in a reasonable amount of time, I've also made a list of 300 nifH genes from NCBI and put them in a file '300-nifh-genes.txt' in the data directory.  *I would highly suggest you use this gene to build your database going forward in this tutorial.*
+To make this tutorial not-as-painful to complete in a reasonable amount of time, I've also made a list of 300 nifH genes from NCBI and put them in a file '300-nifh-genes.txt' in the data directory.  *I would highly suggest you use this gene to build your database going forward in this tutorial,* although you could build your own and work through this tutorial.
 
 Task 6
 ------
@@ -142,12 +142,12 @@ Now, we are going to learn how to download these genes (by learning about the NC
 
 Task 7
 ------
-Think about how you would download this data if you didn't have this tutorial.
+Think about how you would download the data from your accession list of genes if you didn't have this tutorial.
 
 You may have thought about some of the following:
 
 #. Go to the web portal and look up each FASTA
-#. Go to the `FTP site <ftp://ftp.ncbi.nlm.nih.gov/refseq/>`_, find each genome, and download manually
+#. Go to the `FTP site <ftp://ftp.ncbi.nlm.nih.gov/refseq/>`_, find each genome, and download manually and parse out the genes.
 #. Use the NCBI Web Services API to download the data
 
 Among these, I'm going to assume many of you are familiar with the first two.  This tutorial then is going to focus on using APIs.
@@ -209,11 +209,11 @@ Going back onto your instance, in the shell, you could run the same commands abo
 
 You'll see it fly on to your screen.  Don't panic - you can save it to a file and make it more useful BUT note the path you are in and where you will save this file (as long as you know...that's fine)::
 
-    cd /home/ubuntu/cibnor-2017/data
+    cd /home/ubuntu/ncbi-tutorial/data
 
     curl "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=X51500.1&rettype=fasta&retmode=text" > X51500.1.fa
 
-You could now imagine writing a program where you made a list of IDs you want to download and put it in a for loop, *curling* each genome and saving it to a file.  The following is a `script <https://github.com/adina/cibnor-2017/blob/master/scripts/fetch-genomes.py>`_.  Thanks to Jordan Fish who gave me the original version of this script before I even knew how and made it easy to use.
+You could now imagine writing a program where you made a list of IDs you want to download and put it in a for loop, *curling* each genome and saving it to a file.  The following is a `script <https://github.com/germs-lab/ncbi-tutorial/blob/master/scripts/fetch-genomes.py>`_.  Thanks to Jordan Fish who gave me the original version of this script before I even knew how and made it easy to use.
 
 To see the documentation for this script in the scripts directory::
 
@@ -225,12 +225,12 @@ Task 12a
 --------
 .. Note::
 
-    If you are nervous....you may want to run this on just a few of these IDs to begin with.  You can create a smaller list using the *head* command with the -n parameter in the shell.  For example, head -n 3 300-nifh-genes.txt > 3genes.txt.  Please note that you will have to think about WHERE to run this script.  This command, for example, is written to be run in the /home/ubuntu/cibnor-2017
+    If you are nervous....you may want to run this on just a few of these IDs to begin with.  You can create a smaller list using the *head* command with the -n parameter in the shell.  For example, head -n 3 300-nifh-genes.txt > 3genes.txt.  Please note that you will have to think about WHERE to run this script.  This command, for example, is written to be run in the /home/ubuntu/ncbi-tutorial
 directory.  
 
 Run this script (note that your paths for the script or data may need to be specified) -- also see note below::
     
-    cd /home/ubuntu/cibnor-2017/data
+    cd /home/ubuntu/ncbi-tutorial/data
     python ../scripts/fetch-genomes.py 300-nifh-genes.txt nifh-database-fastas
 
 Sit back and think of the glory that is happening on your screen right now...
@@ -270,7 +270,7 @@ Format your nifH database for BLAST and then perform an alignment (with BLAST) o
 
     makeblastdb -in <nifh-db> -dbtype nucl -out <nifh-db>
     
-    cd /home/ubuntu/cibnor-2017/data
+    cd /home/ubuntu/ncbi-tutorial/data
     makeblastdb -in nifh-database-fastas/all-nifH.fa -dbtype nucl -out nifh-database-fastas/all-nifH-db.fa
     
 You should also add your lit search genes (those 30 genes) into your NCBI downloaded genes if you're up to the challenge -- it takes a couple steps.  Now, run your blast. 
@@ -279,7 +279,7 @@ I would suggest something like the following variables, note that the outfmt fla
 
     blastn -query <metag file> -db <db file> -out <name of output> -outfmt 6
     
-    cd /home/ubuntu/cibnor-2017/data
+    cd /home/ubuntu/ncbi-tutorial/data
     
     blastn -query metags/corn.fa -db nifh-database-fastas/all-nifH-db.fa -out corn-blast-output.txt -outfmt 6
 
@@ -322,7 +322,7 @@ Task 17
 -------
 Produce an abundance table of all genes in your 3 metagenomes.  You should call this command with "paths" in mind...where are your blast output files::
 
-    cd /home/ubuntu/cibnor-2017/data/metags
+    cd /home/ubuntu/ncbi-tutorial/data/metags
     python ../../scripts/count-up.py *txt
 
 This script produces a file, 'summary-count.tsv'.  Can you read it?
