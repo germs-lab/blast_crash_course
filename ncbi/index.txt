@@ -59,11 +59,11 @@ Get the metagenome datasets and scripts related to this tutorial.
 
 All the tutorial materials are contained on a Github repository.  The reason for using Github is that this material can be updated by me and grabbed by you lucky folk seamlessly with just a couple commands.  If you are interested in learning more about Git, see these [tutorials]()::
 
-    git clone https://github.com/adina/cibnor-2017
+    git clone https://github.com/germs-lab/ncbi-tutorial.git
 
-This command will make a directory (or folder for those more Finder/Explorer inclined) named "cibnor-2017" in the location where it was run.  Within that directory, there will be two directories containing "data" and "scripts".  You can see this by navigating (hint:  cd) to the "cibnor-2017" directory and typing::
+This command will make a directory (or folder for those more Finder/Explorer inclined) named "ncbi-tutorial" in the location where it was run.  Within that directory, there will be two directories containing "data" and "scripts".  You can see this by navigating (hint:  cd) to the "ncbi-tutorial" directory and typing::
 
-    cd cibnor-2017
+    cd ncbi-tutorial
     ls -lah
 
 Task 2 - Explore the data
