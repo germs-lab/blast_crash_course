@@ -6,6 +6,8 @@
 Tutorial - Databases's documentation!
 =========================================================
 
+Here is a random note.
+
 Contents:
 
 .. toctree::
