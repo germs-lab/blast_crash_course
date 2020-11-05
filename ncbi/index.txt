@@ -29,6 +29,11 @@ Your tools
 EC2 instance for computing with blast installed [Jia if you want you can have them isntall blast, that might be a fun learning exercise]
 An intro to shell
 
+===================
+New sample category
+===================
+
+Example text.
 
 ================
 Getting the Data
