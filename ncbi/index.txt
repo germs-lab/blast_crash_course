@@ -1,7 +1,7 @@
 =================================================
 So you want to start using that big data in NCBI?
 =================================================
-Authored by: Adina Howe, Jia Liu, and Paul Villanueva; MODIFIED from a previous `tutorial <http://blast-tutorial.readthedocs.io/en/latest/ncbi/index.html>`_.
+Authored by: Adina Howe, Jia Liu, and Paul Villanueva; MODIFIED from a previous `tutorial <http://blast-tutorial.readthedocs.io/en/latest/ncbi/index.html>`_
 =================================================
 
 ===================
