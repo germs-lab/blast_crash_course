@@ -4,9 +4,9 @@ So you want to start using that big data in NCBI?
 Authored by: Adina Howe, Jia Liu, and Paul Villanueva; MODIFIED from a previous `tutorial <http://blast-tutorial.readthedocs.io/en/latest/ncbi/index.html>`_
 =================================================
 
-===================
-Learning objectives
-===================
+==============================
+Section 1. Learning objectives
+==============================
 This is a tutorial for working with sequencing data and running a program in shell.  The learning objectives for this tutorial are as follows:
 
 1.  To be able to navigate and read a sequencing file in shell.
@@ -18,32 +18,259 @@ You will need to know some things prior to this tutorial:
 1.  Access and login to an Amazon EC2 instance or similar ubuntu-based server
 2.  A brief introduction to shell
 
-Your mission, if you choose to accept it, is to XXXXXXXXXXXJia for you to fill in....
+Your mission, if you choose to accept it, is to identify **nitrogen fixation genes** found in **sequencing DNA from soils**.
 
 You have been delivered three dogma-changing metagenomes (sequencing datasets) originating from three different Iowa crop soils (corn, soybean, and prairie).  You are interesting in identifying nitrogen fixation genes that are associated with native bacteria in these soils.  Nitrogen fixation is a natural process performed by bacteria that converts nitrogen in the atmosphere into a form that is usable for plants.  If we can optimize natural nitrogen fixation, our hope is to reduce nitrogen fertilizer inputs that may contribute to the eutrophication of downstream waters (e.g., dead zones in the Gulf of Mexico).
 
-==========
-Your tools
-==========
+================
+Section 2. BLAST
+================
+From *Wikipedia*: "BLAST (basic local alignment search tool) is an algorithm and program for comparing primary biological sequence information, such as the amino-acid sequences of proteins or the nucleotides of DNA and/or RNA sequences. A BLAST search enables a researcher to compare a **subject protein or nucleotide sequence (called a query)** with a **library or database of sequences**, and identify library sequences that resemble the query sequence above a certain threshold."
 
-EC2 instance for computing with blast installed [Jia if you want you can have them isntall blast, that might be a fun learning exercise]
-An intro to shell
 
-===================
-New sample category
-===================
+Task 1. Get the data (your sequence)
+====================================
 
-Example text.
+Get the data from Github repository
+-----------------------------------
+
+All the tutorial materials are contained on a Github repository. Get the example data from our tutorial github page::
+
+	git clone https://github.com/germs-lab/ncbi-tutorial.git
+
+This command will make a directory (or folder for those more Finder/Explorer inclined) named “ncbi-tutorial” in the location where it was run. Within that directory, there will be two directories containing “data” and “scripts”. You can see this by navigating (hint: cd) to the “ncbi-tutorial” directory and typing ::
+
+	cd ncbi-tutorial
+	ls
+
+Explore the data
+----------------
+- **Basic introduction about our files**
+First navigate to the data directory::
+
+	cd data
+
+Let's see what surprise we have here::
+
+	ls
+	ls *	# List all subdirectories
+
+- ``nifh_db/``: a folder contains nucleotide sequence file for nitrogen fixation genes ``nifh-ref.fa`` --- **database**
+
+- ``metags/``: a folder contains metagenome files from three different Iowa crop soils (corn, soybean, and prairie) --- **query**
+
+- **Objective**: Identify the existence of nitrogen fixation genes in soil metagenome files
+
+In reality, database is not limited to functional genes of bacteria that we are using here. It can be a database of nucleotide or amino acid sequences that you would like to compare your query sequences with. At NCBI, ``nr`` is a database of protein sequences and ``nt`` is a nucleotide database. Get NCBI BLAST databases from `here
+<https://www.ncbi.nlm.nih.gov/books/NBK537770/>`_.
+
+The same with query: query is not limited to metagenomes as shown in this tutorial. It can be any nucleotide or amino acid sequences, such as gene sequences generated from your lab.
+
+We talked about sequence files. So ...
+
+- **How does sequence file look like?**
+
+Let's look at the first 10 lines of the corn metagenome file::
+	
+	head -10 metags/corn.fa
+
+**fasta**: One of the most common sequence file types. Fasta files may have extension as ``.fasta`` or ``.fna`` or ``.fa``
+
+.. image:: fasta.png
+
+Learn more about sequencing file format from `here
+<https://www.ncbi.nlm.nih.gov/sra/docs/submitformats/#fastq-files>`_.
+
+
+- **How many sequences are there in the fasta file?**
+
+we know that each sequence name will start with a special character, ``>``. So we can 
+
+1. find lines that start with ``>``
+2. count the total number of these lines 
+
+Remember we can find specific characters in a file with ``grep``? For example, to find all instances of ``TGATGGCTATG`` in the corn.fa file, we could::
+
+	grep TGATGGCTATG metags/corn.fa
+
+To find sequences, we know that each sequence will start with a special character, ``>``.
+
+``^>`` match line which starts with ``>``, the charter(s) after ``^``. So we are going to find this pattern with ``grep``, and pipe (``|``) these lines to the next command ``wc -l``::
+
+	grep "^>" metags/corn.fa | wc -l
+
+Or... if you want to get the number of sequences in each of the three metagenome files quickly::
+
+	for x in metags/*.fa; do echo $x; grep "^>" $x | wc -l; done
+
+
+Exercise 1.1
+------------
+Exercise:
+
+1.1.1. Show the last 40 lines of ``nifh-ref.fa``. (Hint: ``head`` command reads the file from the beginning and ``tail`` command reads the file from the ending)
+
+1.1.2. Get the total number of nitrogen fixation gene sequences in ``nifh-ref.fa`` file
+
+1.1.3. Do you know what file is showing in the picture below?
+
+.. image:: r_protein_fa.png
+
+Solution: 
+
+1.1.1. Command::
+
+	tail -40 nifh_db/nifh-ref.fa
+
+1.1.2. Command::
+
+	grep "^>" nifh_db/nifh-ref.fa | wc -l
+
+1.1.3. It is a fasta file with amino acid sequences.
+
+
+Task 2. Install BLAST
+=====================
+
+Download BLAST
+--------------
+Let's download the compressed blast package after navigating to the folder you prefered by::
+
+	wget https://ftp.ncbi.nlm.nih.gov/blast/executables/LATEST/ncbi-blast-2.11.0+-x64-linux.tar.gz
+
+Find more BLAST package download and install information from `here
+<https://www.ncbi.nlm.nih.gov/books/NBK279671/>`_ webpage.
+
+Install BLAST
+-------------
+We can install BLAST by extracting the downloaded compressed package after placing it under a desired directory::
+
+	tar zxvpf ncbi-blast-2.11.0+-x64-linux.tar.gz	# Archieve the compressed package
+
+Yay, we have a brand new BLAST installed! Let's try it out::
+	
+	blastn -help
+
+Oops... It seems like something is going wrong. Then try this::
+
+	~/tools/ncbi-blast-2.11.0+/bin/blastn -help
+
+A lot of helpful information is showing. It worked this time, but we need to use the whole path of ``blastn``.
+
+There is a ``bin`` directory in ``ncbi-blast-2.11.0+`` that contains the actual executable code files of BLAST. We want to add the path of ``bin`` to the environment ``PATH``. This allows us to use BLAST on the command line in other directories without knowing and typing the whole path to the BLAST ``bin`` directory.
+
+Let's nevigate to the actual executable code folder of BLAST, and add the path of this directory to ``PATH``::
+
+	cd ncbi-blast-2.11.0+/bin	# nevigate to the bin folder under BLAST
+	ls
+	pwd
+	blast_dir=$(pwd)
+	export PATH=$PATH:$blast_dir	# Add the path of the tool to environment PATH
+
+
+Awesome! Now we have our data and BLAST tool set up. We will start the process of identifying nitrogen fixation genes in soil metagenome files in the next task.
+
+Before moving on, these are some basic introduction about BLAST commands:
+
++---------------+-----------------------+----------------------+
+| BLAST command |    query              | database             |
++===============+=======================+======================+
+| blastn        | nucleotide            |nucleotide            |
++---------------+-----------------------+----------------------+
+| blastp        | protein               |protein               |
++---------------+-----------------------+----------------------+
+| blastx        | translated nucleotide |protein               |
++---------------+-----------------------+----------------------+
+| tblastn       | protein               |translated nucleotide |
++---------------+-----------------------+----------------------+
+
+
+Exercise 2.1
+------------
+Exercise:
+
+2.1.1. In our case, which BLAST command should we use to compare metagenome queries with nitrogen fixation gene database?
+
+2.1.2. Navigate to the ``data/`` folder, can you get the "help" information of the BLAST command you decided to use from exercise 2.1.1 in this folder?
+
+Solution: 
+
+2.1.1. We should use ``blastn`` as we can tell from the previous steps that both ``nifh-ref.fa`` and soil metagenome files are nucleotide fasta files.
+
+2.1.2. Command::
+
+	cd data/
+	blastn -help
+
+
+Task 3. BLAST
+=============
+
+Make database
+-------------
+Format your nifH database for BLAST and then perform an alignment (with BLAST) of your metagenomes against your new database:: 
+
+    makeblastdb -in <nifh-db> -dbtype nucl -out <nifh-db>
+    
+    cd /home/ubuntu/ncbi-tutorial/data
+    makeblastdb -in nifh-ref.fa -dbtype nucl -out nifh_db/nifh-ref.fa
+
+    # list the nitrogen fixation gene database in nifh_db
+    ls nifh_db/
+
+
+BLAST
+-----
+I would suggest something like the following variables, note that the outfmt flag identifies a tabular output::
+
+    blastn -query <metag file> -db <db file> -out <name of output> -outfmt 6
+    
+    cd /home/ubuntu/ncbi-tutorial/data
+    
+    blastn -query metags/corn.fa -db nifh_db/nifh-ref.fa -out metags/corn.fa-blast-output.txt -outfmt 6
+
+Make sure you've created a blast output for each of the metagenomes in the tutorial. This can be done with a ``for`` loop::
+
+    for x in metags/*fa; do blastn -query $x -db nifh_db/nifh-ref.fa -out $x-blast-output.txt -outfmt 6; done
+
+Task 4. Read the BLAST output
+=============================
+
+Examine your blast outputs. What do the first few lines contain? How many hits do you have per metagenome to your database?::
+
+	cd metags
+	ls
+
+Let's see how the BLAST output files look like::
+
+	head corn.fa-blast-output.txt
+
+	# how many lines within each BLAST output file
+	for y in *.txt; do wc -l $y; done
+
+
+That's a lot of information within each output file that maybe hard for us to see the bigger picture here. We can produce an abundance table of all genes in the 3 metagenomes with a python script. You should call this command with “paths” in mind…where are your blast output files::
+
+	cd /home/ubuntu/ncbi-tutorial/data/metags
+	python ../../scripts/count-up.py *txt
+
+This script produces a file, ``summary-count.tsv``. Can you read it?::
+
+	head summary-count.tsv
+	wc -l summary-count.tsv
+
+
+Alright, we know the abundance of each gene exists in corn, prairie, and soybean metagenome sample. We can get more information about each gene by extracting the annotation information from nifH gene fasta file::
+	
+	python ../../scripts/import-ann.py ../nifh_db/nifh-ref.fa summary-count.tsv > summary-count-ann.tsv  
+
+
+Transfer the annotated file over to your laptop and open it in Excel::
+
+	mv summary-count-ann.tsv ~/.
 
 ================
-Getting the Data
+Conclusion
 ================
 
-Suggested steps
-1.  Look at the sequence file from seq facility
-2.  Identify the database genes (look at it, possibly build it if you think there is time?)
-3.  install blast?  i think its a good idea
-4.  Run blast (makedb and a blast)
-5.  Get output saved
-6.  Look at output
-7.  Grep something in the output 
+You now have the foundation for having some sequencing data that you need to compare to any database. You should be able to generate the information needed to perform statistical analyses. Note, that you can do this for specific genes and also genomes…! Now, go forth and conquer!
