@@ -7,46 +7,66 @@ Authored by: Adina Howe, Jia Liu, and Paul Villanueva; MODIFIED from a previous 
 ==============================
 Section 1. Learning objectives
 ==============================
-This is a tutorial for working with sequencing data and running a program in shell.  The learning objectives for this tutorial are as follows:
+This is a tutorial for working with sequencing data and running a program in shell.  
+
+Objectives
+==========
+The learning objectives for this tutorial are as follows:
 
 1.  To be able to navigate and read a sequencing file in shell.
-2.  To be able to run a command line blast.
-3.  To be able to search a blast output file.
+2.  To be able to run a command line BLAST.
+3.  To be able to search a BLAST output file.
 
+Pre-requisites
+==============
 You will need to know some things prior to this tutorial:
 
 1.  Access and login to an Amazon EC2 instance or similar ubuntu-based server
 2.  A brief introduction to shell
 
-Your mission, if you choose to accept it, is to identify **nitrogen fixation genes** found in **sequencing DNA from soils**.
+Mission
+=======
+Your mission, if you choose to accept it, is to identify **nitrogen fixation genes (nifh genes)** from **sequencing DNA from soils**.
 
-You have been delivered three dogma-changing metagenomes (sequencing datasets) originating from three different Iowa crop soils (corn, soybean, and prairie).  You are interesting in identifying nitrogen fixation genes that are associated with native bacteria in these soils.  Nitrogen fixation is a natural process performed by bacteria that converts nitrogen in the atmosphere into a form that is usable for plants.  If we can optimize natural nitrogen fixation, our hope is to reduce nitrogen fertilizer inputs that may contribute to the eutrophication of downstream waters (e.g., dead zones in the Gulf of Mexico).
+**Details:**
+	You have been delivered three dogma-changing metagenomes (sequencing datasets) originating from three different Iowa crop soils (corn, soybean, and prairie).  You are interested in identifying nitrogen fixation genes that are associated with native bacteria in these soils.  Nitrogen fixation is a natural process performed by bacteria that converts nitrogen in the atmosphere into a form that is usable for plants.  If we can optimize natural nitrogen fixation, our hope is to reduce nitrogen fertilizer inputs that may contribute to the eutrophication of downstream waters (e.g., dead zones in the Gulf of Mexico).
 
 ================
 Section 2. BLAST
 ================
-From *Wikipedia*: "BLAST (basic local alignment search tool) is an algorithm and program for comparing primary biological sequence information, such as the amino-acid sequences of proteins or the nucleotides of DNA and/or RNA sequences. A BLAST search enables a researcher to compare a **subject protein or nucleotide sequence (called a query)** with a **library or database of sequences**, and identify library sequences that resemble the query sequence above a certain threshold."
+From *Wikipedia*: 
+
+	"BLAST (basic local alignment search tool) is an algorithm and program for comparing primary biological sequence information, such as the amino-acid sequences of proteins or the nucleotides of DNA and/or RNA sequences. 
+
+	A BLAST search enables a researcher to compare a **subject protein or nucleotide sequence (called a query)** with a **library or database of sequences**, and identify library sequences that resemble the query sequence above a certain threshold."
 
 
-Task 1. Get the data (your sequence)
-====================================
+Task 1. Explore the data
+========================
 
-Get the data from Github repository
------------------------------------
+First of all, let's nevigate to the ``home`` directory ::
 
-All the tutorial materials are contained on a Github repository. Get the example data from our tutorial github page::
-
-	git clone https://github.com/germs-lab/ncbi-tutorial.git
-
-This command will make a directory (or folder for those more Finder/Explorer inclined) named “ncbi-tutorial” in the location where it was run. Within that directory, there will be two directories containing “data” and “scripts”. You can see this by navigating (hint: cd) to the “ncbi-tutorial” directory and typing ::
-
-	cd ncbi-tutorial
+	cd ~
 	ls
 
-Explore the data
-----------------
-- **Basic introduction about our files**
-First navigate to the data directory::
+
+The tutorial materials of the BLAST workshop is in the ``materials`` directory::
+
+	cd materials
+	ls
+
+
+Basic introduction about our files
+----------------------------------
+We will go to the ``ncbi-tutorial`` and see what's in there::
+
+	cd ncbi-tutorial/
+	ls *
+
+The sequence data that we will be using are in ``data`` folder. There are some pre-written python scripts in ``scripts`` directory that can be helpful after we get the BLAST results.
+
+
+First let's navigate to the data directory::
 
 	cd data
 
@@ -61,14 +81,15 @@ Let's see what surprise we have here::
 
 - **Objective**: Identify the existence of nitrogen fixation genes in soil metagenome files
 
-In reality, database is not limited to functional genes of bacteria that we are using here. It can be a database of nucleotide or amino acid sequences that you would like to compare your query sequences with. At NCBI, ``nr`` is a database of protein sequences and ``nt`` is a nucleotide database. Get NCBI BLAST databases from `here
+In reality, database is not limited to functional genes of bacteria that we are using here. It can be a database of nucleotide or amino acid sequences that you would like to compare your query sequences with, for example: reference genome. At NCBI, ``nr`` is a database of protein sequences and ``nt`` is a nucleotide database. Get NCBI BLAST databases from `here
 <https://www.ncbi.nlm.nih.gov/books/NBK537770/>`_.
 
 The same with query: query is not limited to metagenomes as shown in this tutorial. It can be any nucleotide or amino acid sequences, such as gene sequences generated from your lab.
 
 We talked about sequence files. So ...
 
-- **How does sequence file look like?**
+How does sequence file look like?
+---------------------------------
 
 Let's look at the first 10 lines of the corn metagenome file::
 	
@@ -82,7 +103,8 @@ Learn more about sequencing file format from `here
 <https://www.ncbi.nlm.nih.gov/sra/docs/submitformats/#fastq-files>`_.
 
 
-- **How many sequences are there in the fasta file?**
+How many sequences are there in the fasta file?
+-----------------------------------------------
 
 we know that each sequence name will start with a special character, ``>``. So we can 
 
@@ -91,11 +113,11 @@ we know that each sequence name will start with a special character, ``>``. So w
 
 Remember we can find specific characters in a file with ``grep``? For example, to find all instances of ``TGATGGCTATG`` in the corn.fa file, we could::
 
-	grep TGATGGCTATG metags/corn.fa
+	grep "TGATGGCTATG" metags/corn.fa
 
 To find sequences, we know that each sequence will start with a special character, ``>``.
 
-``^>`` match line which starts with ``>``, the charter(s) after ``^``. So we are going to find this pattern with ``grep``, and pipe (``|``) these lines to the next command ``wc -l``::
+``^>`` matches line which starts with ``>``, the charter(s) after ``^``. So we are going to find this pattern with ``grep``, and pipe (``|``) these lines to the next command ``wc -l``::
 
 	grep "^>" metags/corn.fa | wc -l
 
@@ -106,7 +128,7 @@ Or... if you want to get the number of sequences in each of the three metagenome
 
 Exercise 1.1
 ------------
-Exercise:
+**Exercise**:
 
 1.1.1. Show the last 40 lines of ``nifh-ref.fa``. (Hint: ``head`` command reads the file from the beginning and ``tail`` command reads the file from the ending)
 
@@ -116,7 +138,7 @@ Exercise:
 
 .. image:: r_protein_fa.png
 
-Solution: 
+**Solution**: 
 
 1.1.1. Command::
 
@@ -131,41 +153,64 @@ Solution:
 
 Task 2. Install BLAST
 =====================
+We need to download and install the BLAST package before using it. I am going to go back to the ``home`` directory, make a new folder ``tools``, and set up BLAST there::
+
+	cd ~
+	mkdir tools
+	ls    # you should be able to see your tools folder
+
+We will nevigate to the ``tools`` folder::
+
+	cd tools
+
 
 Download BLAST
 --------------
-Let's download the compressed blast package after navigating to the folder you prefered by::
+Let's download the compressed BLAST package after navigating to the folder you prefered by::
 
 	wget https://ftp.ncbi.nlm.nih.gov/blast/executables/LATEST/ncbi-blast-2.11.0+-x64-linux.tar.gz
 
 Find more BLAST package download and install information from `here
-<https://www.ncbi.nlm.nih.gov/books/NBK279671/>`_ webpage.
+<https://www.ncbi.nlm.nih.gov/books/NBK279671/>`_.
 
 Install BLAST
 -------------
-We can install BLAST by extracting the downloaded compressed package after placing it under a desired directory::
+We can install BLAST by extracting the downloaded compressed package::
 
-	tar zxvpf ncbi-blast-2.11.0+-x64-linux.tar.gz	# Archieve the compressed package
+	tar zxvpf ncbi-blast-2.11.0+-x64-linux.tar.gz	# extract from the compressed package
 
 Yay, we have a brand new BLAST installed! Let's try it out::
 	
 	blastn -help
 
-Oops... It seems like something is going wrong. Then try this::
+Oops... ``Command 'blastn' not found...`` We just did install BLAST! It seems like something is going wrong. Let's see if we can find the path/location of ``blastn`` with ``which`` command::
+
+	which blastn
+
+
+No path found. I already checked the ``ncbi-blast-2.11.0+`` folder and know where ``blastn`` is stored. Let's try to call "help" for ``blastn`` with its path::
 
 	~/tools/ncbi-blast-2.11.0+/bin/blastn -help
 
-A lot of helpful information is showing. It worked this time, but we need to use the whole path of ``blastn``.
+A lot of helpful information is showing. It worked this time, but we need to use the whole path of ``blastn``. Hey, we don't need to use the whole path for ``grep``, or ``ls``, or ``pwd``. Why only BLAST?
 
-There is a ``bin`` directory in ``ncbi-blast-2.11.0+`` that contains the actual executable code files of BLAST. We want to add the path of ``bin`` to the environment ``PATH``. This allows us to use BLAST on the command line in other directories without knowing and typing the whole path to the BLAST ``bin`` directory.
+There is an environment variable ``PATH``. If you add the path of executable code files to ``PATH``, the system will automatically know where to find this executable script when you run it. So that we can run these scripts on the command line in other directories without knowing and typing the whole path to them. Let's see if bash knows where to find ``grep``::
 
-Let's nevigate to the actual executable code folder of BLAST, and add the path of this directory to ``PATH``::
+	which grep
 
-	cd ncbi-blast-2.11.0+/bin	# nevigate to the bin folder under BLAST
+It does! Because the path of ``grep`` is already in ``PATH`` variable.
+
+We want to add the path of ``blastn`` to the environment ``PATH``. This will allow us to use ``blastn`` on the command line in other directories without knowing and typing the whole path to ``blastn``. 
+
+Let's nevigate to the actual executable code scripts folder of BLAST, and add the path of these scripts to ``PATH``::
+
+	# nevigate to the bin folder under BLAST
+	cd ncbi-blast-2.11.0+/bin	
 	ls
+
 	pwd
-	blast_dir=$(pwd)
-	export PATH=$PATH:$blast_dir	# Add the path of the tool to environment PATH
+	export PATH=$PATH:/home/ubuntu/tools/ncbi-blast-2.11.0+/bin	# Add the path of the tool to environment PATH
+	echo $PATH
 
 
 Awesome! Now we have our data and BLAST tool set up. We will start the process of identifying nitrogen fixation genes in soil metagenome files in the next task.
@@ -187,19 +232,19 @@ Before moving on, these are some basic introduction about BLAST commands:
 
 Exercise 2.1
 ------------
-Exercise:
+**Exercise**:
 
 2.1.1. In our case, which BLAST command should we use to compare metagenome queries with nitrogen fixation gene database?
 
-2.1.2. Navigate to the ``data/`` folder, can you get the "help" information of the BLAST command you decided to use from exercise 2.1.1 in this folder?
+2.1.2. Navigate to the ``~/materials/ncbi-tutorial/data/`` folder first. Can you get the "help" information of the BLAST command you decided to use from exercise 2.1.1 in this folder?
 
-Solution: 
+**Solution**: 
 
 2.1.1. We should use ``blastn`` as we can tell from the previous steps that both ``nifh-ref.fa`` and soil metagenome files are nucleotide fasta files.
 
 2.1.2. Command::
 
-	cd data/
+	cd ~/materials/ncbi-tutorial/data/
 	blastn -help
 
 
@@ -208,48 +253,72 @@ Task 3. BLAST
 
 Make database
 -------------
-Format your nifH database for BLAST and then perform an alignment (with BLAST) of your metagenomes against your new database:: 
+We want to find the existence of nifh genes in soil metagenome samples. Making a database for nifh genes is a smart way to index the gene sequences so that it can search and compare metagenome sequences (query) with nifh gene sequences much faster.
 
-    makeblastdb -in <nifh-db> -dbtype nucl -out <nifh-db>
+To make a database of nifh gene sequences:: 
+
+    # Usage: makeblastdb -in <nifh-db> -dbtype nucl -out <nifh-db>
     
-    cd /home/ubuntu/ncbi-tutorial/data
-    makeblastdb -in nifh-ref.fa -dbtype nucl -out nifh_db/nifh-ref.fa
+    cd /home/ubuntu/materials/ncbi-tutorial/data
+    makeblastdb -in nifh_db/nifh-ref.fa -dbtype nucl -out nifh_db/nifh-ref.fa
 
-    # list the nitrogen fixation gene database in nifh_db
+    # the database looks like:
     ls nifh_db/
 
 
 BLAST
 -----
-I would suggest something like the following variables, note that the outfmt flag identifies a tabular output::
+Now we can BLAST the metagenome files to nifh gene database. I would suggest something like the following variables, note that the ``-outfmt 6`` flag identifies a tabular output::
 
-    blastn -query <metag file> -db <db file> -out <name of output> -outfmt 6
+    # Usage: blastn -query <metag file> -db <db file> -out <name of output> -outfmt 6
     
     cd /home/ubuntu/ncbi-tutorial/data
     
     blastn -query metags/corn.fa -db nifh_db/nifh-ref.fa -out metags/corn.fa-blast-output.txt -outfmt 6
 
-Make sure you've created a blast output for each of the metagenomes in the tutorial. This can be done with a ``for`` loop::
 
-    for x in metags/*fa; do blastn -query $x -db nifh_db/nifh-ref.fa -out $x-blast-output.txt -outfmt 6; done
+We can have a good understanding of ``-outfmt 6`` format from this `webpage
+<https://sites.google.com/site/wiki4metagenomics/tools/blast/blastn-output-format-6>`_.
 
-Task 4. Read the BLAST output
-=============================
 
-Examine your blast outputs. What do the first few lines contain? How many hits do you have per metagenome to your database?::
+Make sure you've created a BLAST output for each of the metagenomes in the tutorial. This can be done with a ``for`` loop::
+
+	rm metags/corn.fa-blast-output.txt
+
+    for x in metags/*.fa; do blastn -query $x -db nifh_db/nifh-ref.fa -out $x-blast-output.txt -outfmt 6; done
+
+
+
+Play around BLAST output
+------------------------
+Let's first nevigate to the folder with BLAST output::
 
 	cd metags
 	ls
 
-Let's see how the BLAST output files look like::
+We may be interested in: What do the first few lines contain? How many hits do you have per metagenome to your database? ... Let's examine the BLAST output::
 
 	head corn.fa-blast-output.txt
 
-	# how many lines within each BLAST output file
+	# how many lines within each BLAST output file:
 	for y in *.txt; do wc -l $y; done
 
+	# extract column 1, 3, and 5 by `cut`:
+	cut -f 1,3,5 corn.fa-blastn-output.txt
 
-That's a lot of information within each output file that maybe hard for us to see the bigger picture here. We can produce an abundance table of all genes in the 3 metagenomes with a python script. You should call this command with “paths” in mind…where are your blast output files::
+
+Wow, that's a lot of information that makes it hard to directly conclude anything from them. Let's start with one random gene, ``gi|909637271|emb|LN713523.1|``, how many times was this gene hit by sequences from corn metagenome sample?::
+
+	grep "gi|909637271|emb|LN713523.1|" corn.fa-blastn-output.txt | wc -l
+
+
+That seems like some useful information. But we may want to know the abundance of every nifh gene in the different soil metagenomes. Sounds like a little bit challenging. We will go through this process in the next task with some python scripts. 
+
+
+Task 4. Read the BLAST output
+=============================
+
+The massive amount of information within each BLAST output file makes it hard for us to directly see the big picture. We can produce an abundance table of all genes in the 3 metagenomes with a python script. You should call this command with “paths” in mind where your BLAST output files are::
 
 	cd /home/ubuntu/ncbi-tutorial/data/metags
 	python ../../scripts/count-up.py *txt
@@ -264,13 +333,14 @@ Alright, we know the abundance of each gene exists in corn, prairie, and soybean
 	
 	python ../../scripts/import-ann.py ../nifh_db/nifh-ref.fa summary-count.tsv > summary-count-ann.tsv  
 
-
-Transfer the annotated file over to your laptop and open it in Excel::
-
-	mv summary-count-ann.tsv ~/.
-
 ================
 Conclusion
 ================
 
 You now have the foundation for having some sequencing data that you need to compare to any database. You should be able to generate the information needed to perform statistical analyses. Note, that you can do this for specific genes and also genomes…! Now, go forth and conquer!
+
+
+
+**Acknowledgement**:
+	
+	This work was supported by the National Science Foundation Directorate of Biological Sciences under awards DEB 1737758 and DEB 1737765.
