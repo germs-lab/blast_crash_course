@@ -1,0 +1,31 @@
+Suggested steps 
+
+1.  Look at the sequence file from seq facility
+2.  Identify the database genes (look at it, possibly build it if you think there is time?)
+3.  install blast?  i think its a good idea
+4.  Run blast (makedb and a blast)
+5.  Get output saved
+6.  Look at output
+7.  Grep something in the output 
+
+
+
+
+PATH: use head / tail, already on the PATH
+
+
+`which blast`
+
+ Task3: 
+
+ blast is a clever way to index the sequences so that it can search and compare faster
+
+ put a link of outfmt 6
+
+ blastn -help
+
+ type the command
+
+
+Working with blastn output:
+ play with the blastn output
