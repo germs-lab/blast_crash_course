@@ -14,9 +14,6 @@ Material for a one day BLAST crash course hosted by the `GERMS lab <http://www.g
 	:maxdepth: 2
 	:caption: Contents:
 
-	shell-tutorial/index
-	nbi/index
-
 
 Indices and tables
 ==================
