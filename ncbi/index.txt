@@ -1,8 +1,10 @@
-=================================================
-So you want to start using that big data in NCBI?
-=================================================
-Authored by: Adina Howe, Jia Liu, and Paul Villanueva; MODIFIED from a previous `tutorial <http://blast-tutorial.readthedocs.io/en/latest/ncbi/index.html>`_
-=================================================
+===============================
+Running a bioinformatic program
+===============================
+
+Authored by: Jia Liu, Paul Villanueva, and Adina Howe
+Modified from a previous `tutorial <http://blast-tutorial.readthedocs.io/en/latest/ncbi/index.html>`_
+
 
 ==============================
 Section 1. Learning objectives
