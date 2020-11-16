@@ -1,7 +1,8 @@
 File Navigation and Listing
-==================
+===========================
 
-File navigation:
+Where are we? And what's in here?
+---------------------------------
 
 We'll begin learning how to use the shell with the most basic aspect: knowing where you are in the file system and knowing what files are in there. The ``pwd`` command tells you this by printing out the **p**resent **w**orking **d**irectory to the console:
 
@@ -180,8 +181,7 @@ If we wanted to move to the ``blast-tutorial`` directory, we can type:
 Nice!
 
 Exercises
----------
+^^^^^^^^^
 
-1. List the contents of your home directory. (Hint: use one of the special characters from the table above)
-2. 
+- List the contents of your home directory. (Hint: use one of the special characters from the table above)
 

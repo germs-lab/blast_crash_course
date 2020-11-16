@@ -170,7 +170,8 @@ Similarly, we can use the ``cat`` command with ``*`` patterns to print out files
 	AAATCGGCGTTTTTTCAACTGCTTAATTACAACCAATAGATAGGAGAACCCGATTATGACTAAAAAACTGAGACAAATCGCATTTTACGGCAAAGGAGGA
 
 Exercises
----------
+^^^^^^^^^
+
  	- How would we ``wc`` only the fasta files that begin with ``seq_``? 
 	- How would we ``wc`` only the ``seq`` files whose numbers start with 2?
 	- How can we ``cat`` all the files (both those that start with ``seq`` and ``other_seq``) whose numbers start with 0?
@@ -267,7 +268,8 @@ We can also save the output of different commands using ``>``. For instance, we 
 	wc * > word_counts
 
 Exercises
----------
+^^^^^^^^^
+
 - Add your favorite food to ``sample``.
 - Use the ``>>`` operator to combine ``other_seq_00.fasta``, ``seq_00.fasta``, and ``seq_13.fasta`` into a file named ``some_sequences.fasta``.
 - Create a file ``fasta_word_counts`` that contains the output of ``wc`` run on all of the fasta files creatd so far.
@@ -329,7 +331,8 @@ Now, when we ``ls`` in this directory, we see that ``sample`` is gone and only `
 
 
 Exercises
----------
+^^^^^^^^^
+
 - Delete ``word_counts``.
 - Rename ``some_sequences.fasta`` to ``combined_sequences.fasta``.
 - We practice using ``mv`` to move a file from the home directory to our current directory; now let's try it the other way. Change back to the home directory and copy ``combined_sequences.fasta`` to the home directory. After doing that, delete the file from ``blast_crash_course/materials/shell_tutorial/data``. 
@@ -392,8 +395,8 @@ However, this may not always be the best choice (why?). Another way we can check
 	
 	wc other_seq_*.fasta
 
-Exercises:
-----------
+Exercises
+^^^^^^^^^
 
 - Combine all of the files that begin with ``seq`` into a file named ``seq.combined.fa``. Double check that it was done correctly.
 - Combine all of the sequences in the directory into a file named ``all_seqs.combined.fa`` and check that it was done correctly. Be careful!
@@ -479,7 +482,7 @@ The answer to this is the same as with ``cp`` - supply the ``-r`` option and the
 	Be VERY careful when using ``rm -r`` as this will remove the directory and everything it contains. If you're not careful when using it, it's possible you'll delete critical system software. Just like with using ``*`` expressions with ``rm``, I always run an ``ls`` on the directory I'm going to delete first to make sure that I won't unexpectedly delete something important.
 
 Exercises
----------
+^^^^^^^^^
 
 - Delete the ``test_dir`` in the home directory.
 - Create a new directory called ``my_work``. Move ``favorites``, ``fasta_word_counts``, ``combined_sequences.fasta``, and ``all_seqs.combined.fa`` into it.
