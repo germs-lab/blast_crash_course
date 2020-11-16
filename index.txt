@@ -6,6 +6,7 @@ This is material for a workshop hosted on 11/17/2020 by the GERMS lab. The goal 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+   :numbered:
 
    materials/shell-tutorial/docs/file_nav
    materials/shell-tutorial/docs/reading_files

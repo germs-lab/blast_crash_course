@@ -1,4 +1,4 @@
-1. File Navigation and Listing
+File Navigation and Listing
 ==================
 
 File navigation:
