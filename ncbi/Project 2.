@@ -1,0 +1,22 @@
+Project 2. 
+
+
+
+**How many sequences are there in the fasta file?**
+
+we know that each sequence name will start with a special character, ``>``. So we can 
+
+1. find lines that start with ``>``
+2. count the total number of these lines 
+
+Remember we can find specific characters in a file with ``grep``? For example, to find all instances of ``GGCG`` in the ``metags/small_meta.fa`` file, we could::
+
+	grep "GGCG" metags/small_meta.fa
+
+To find sequences, we know that each sequence will start with a special character, ``>``.
+
+``^>`` matches line which starts with ``>``, the charter(s) after ``^``. So we are going to find this pattern with ``grep``, and pipe (``|``) these lines to the next command ``wc -l``::
+
+	grep "^>" metags/small_meta.fa | wc -l
+
+
