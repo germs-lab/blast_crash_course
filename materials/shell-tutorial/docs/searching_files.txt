@@ -1,486 +1,218 @@
-Working with files
+Searching files with GREP
 ==================
 
+Searching files is one of the most common things you'll be doing on the command line. Is this word contained in this document? Does this gene appear in this smetagenome? How many sequences are there in this fasta file? How often does this annotation appear in this fasta file?
 
-Counting, listing, and using ``*``
----------------------------------
+The main tool used to search documents is ``grep``. ``grep`` stands for **g**lobally search for a **r**egular **e**xpression and **p**rint matching lines.
 
-Let's start by navigating to the ``data`` file within the ``shell-tutorial`` folder and seeing what's in there:
+Basic grep searches
+-------------------
 
-.. code-block:: shell
-
-	cd ~/blast_crash_course/materials/shell-tutorial/data
-	ls
-
-We see a bunch of sequence fasta files. Let's take a look at what's inside one of them. We can do this using the ``cat`` command. Let's see what's in the ``seq_00.fasta``.
+Let's start by changing into the ``my_work`` directory and searching through some files there.
 
 .. code-block:: shell
 
-	cat seq_00.fasta
+	cd ~/my_work
 
-So ``seq_00.fasta`` contains a single header and a nucleotide sequence on a single line. The header starts with the ``>`` character and contains information about the sequence, and the line after is the nucleotide sequence itself. We can also look at the file using the ``wc`` command:
-
-.. code-block:: shell
-
-	wc seq_00.fasta
-
-The output of ``wc`` command looks like this:
+Let's look for the word "favorite" in the "favorites" document. The syntax for ``grep`` is ``grep [optional-arguments] <pattern> <file>``. We'll just start with a basic search:
 
 .. code-block:: shell
 
-	2    2 8922 seq_00.fasta
-
-The first value is the number of lines in the file, the second is the number of words, and the third is the size of the file in memory. So we can see that ``seq_00.fasta`` is a fasta file where the sequence has all been put on a single line (ie, linearized). However, this may not always be the case for fasta files as the sequences are sometimes word-wrapped to some word width. We can go through and ``wc`` each of the sequences to verify this...
-
-.. code-block:: shell
-
-	wc seq_01.fasta
-	wc seq_02.fasta
-	...
-	wc seq_31.fasta
-	wc other_seq_01.fasta
-	...
-	wc other_seq_09.fasta
-
-...but there is a better way to handle this. We can make use of the ``*``, the wildcard character, to help us. Instead of passing the name of each fasta file to the ``wc`` command individually, we'll use the ``*`` character to specify a **pattern** of filenames, where the ``*`` character stands for "any number of any characters" (hence the name wildcard). Since each file in this directory ends in fasta, we can use ``*`` like so:
-
-.. code-block:: shell
-
-	wc *.fasta
-
-This says to perform the ``wc`` command on all of the files that end in ``.fasta``. The output is:
-
-.. code-block:: shell
-
-     2      2    110 other_seq_00.fasta
-     2      2    110 other_seq_01.fasta
-     2      2    110 other_seq_02.fasta
-     2      2    110 other_seq_03.fasta
-     2      2    110 other_seq_04.fasta
-     2      2    110 other_seq_05.fasta
-     2      2    110 other_seq_06.fasta
-     2      2    110 other_seq_07.fasta
-     2      2    110 other_seq_08.fasta
-     2      2    111 other_seq_09.fasta
-     2      2   8922 seq_00.fasta
-     2      2   8857 seq_01.fasta
-     2      2   8910 seq_02.fasta
-     2      2   8901 seq_03.fasta
-     2      2   8901 seq_04.fasta
-     2      2   8901 seq_05.fasta
-     2      2   8902 seq_06.fasta
-     2      2   8901 seq_07.fasta
-     2      2   8900 seq_08.fasta
-     2      2   8901 seq_09.fasta
-     2      2   8886 seq_10.fasta
-     2      2   8408 seq_11.fasta
-     2      2   8888 seq_12.fasta
-     2      2   8892 seq_13.fasta
-     2      2   8913 seq_14.fasta
-     2      2   5993 seq_15.fasta
-     2      2   8911 seq_16.fasta
-     2      2   8910 seq_17.fasta
-     2      2   8911 seq_18.fasta
-     2      2   8916 seq_19.fasta
-     2      2   8911 seq_20.fasta
-     2      2   8867 seq_21.fasta
-     2      2   8902 seq_22.fasta
-     2      2   8902 seq_23.fasta
-     2      2   8868 seq_24.fasta
-     2      2   8902 seq_25.fasta
-     2      2   8902 seq_26.fasta
-     2      2   8902 seq_27.fasta
-     2      2   8890 seq_28.fasta
-     2      2   8898 seq_29.fasta
-     2      2   8898 seq_30.fasta
-     2      2   8898 seq_31.fasta
-    84     84 282465 total
-
-Much easier! Notice how it the total number of lines and words are added up on the bottom. Since each file has 2 words and two lines, it appears that each fasta file is a single sequence. 
-
-We can also make our patterns more precise. For instance, if we only wanted to get the word counts for the `other_seq` fasta files, we could do:
-
-.. code-block:: shell
-
-	wc other_seq*
-
-This says to perform ``wc`` on all the fastas that start with ``other_seq``. The output:
-
-.. code-block:: shell
-
-   2    2  110 other_seq_00.fasta
-   2    2  110 other_seq_01.fasta
-   2    2  110 other_seq_02.fasta
-   2    2  110 other_seq_03.fasta
-   2    2  110 other_seq_04.fasta
-   2    2  110 other_seq_05.fasta
-   2    2  110 other_seq_06.fasta
-   2    2  110 other_seq_07.fasta
-   2    2  110 other_seq_08.fasta
-   2    2  111 other_seq_09.fasta
-  20   20 1101 total
-
-.. note::
-	This style of listing files is called *globbing*. You can read more about it `here <https://en.wikipedia.org/wiki/Glob_(programming)>`_. Globbing is related to *regular expressions*, which is a very powerful tool for text editing and parsing. A lot of the pattern matching we'll do throughout this tutorial will apply to regular expressions, but there are a ton of excellent tutorials online to learn them more indepth. `RegexOne <https://regexone.com/>`_ is a good place to get started.
-
-Note that we can use ``*`` patterns with ``ls`` in order to list only certain file types within a directory. For instance, to list only the ``seq_`` fasta files:
-
-.. code-block:: shell
-
-	ls seq*
+	grep "favorite" favorites
 
 *Output*:
 
 .. code-block:: shell
 
-	seq_00.fasta  seq_03.fasta  seq_06.fasta  seq_09.fasta  seq_12.fasta  seq_15.fasta  seq_18.fasta  seq_21.fasta  seq_24.fasta  seq_27.fasta  seq_30.fasta
-	seq_01.fasta  seq_04.fasta  seq_07.fasta  seq_10.fasta  seq_13.fasta  seq_16.fasta  seq_19.fasta  seq_22.fasta  seq_25.fasta  seq_28.fasta  seq_31.fasta
-	seq_02.fasta  seq_05.fasta  seq_08.fasta  seq_11.fasta  seq_14.fasta  seq_17.fasta  seq_20.fasta  seq_23.fasta  seq_26.fasta  seq_29.fasta
+	Iced coffee is my favorite drink.
+	My favorite movie is Speed Racer.
+	My favorite food is a burrito.
 
-
-Similarly, we can use the ``cat`` command with ``*`` patterns to print out files that match the pattern to the console:
+Not that exciting since every line contains the word favorite. Instead, let's try searching for our favorite drink:
 
 .. code-block:: shell
 
-	cat other_seq*
+	grep "favorite drink" favorites
 
 *Output*:
 
 .. code-block:: shell
 
-	>meta1_1
-	GGGCCGTGGCGTCATCACGTCGATCAATTTCCTCGAGGAGAACGGCGCGTATGACGGCGTGGACTATGTGTCGTACGACGTGCTCGGCGACGTGGTGTGC
-	>meta1_2
-	GAGCCGGGTGTGGGATGTGCCGGGAGAGGTATCATTACTTCTATTAATTTATTGGAACAGCTTGGTGCCTATGCGGATAGCGAGGAGCTGGATTATATAT
-	>meta1_3
-	CCTGATCTGCAACGAACGTCAAACCGACCGTGAGCTCGACCTTGCTGAAGCCCTGGCTTCCAGGCTCAATTCCAAGCTCATCCATTTCGTGCCGCGCGAC
-	>meta1_4
-	TTCCATCAACATGCTGGAAAACCTCGGTGCCTACGAAGAATCCGAAGGACTGGACTACGCTTTCTATGACGTCCTCGGTGACGTTGTTTGCGGCGGATTC
-	>meta1_5
-	GATGGCGCTCTATGCCGCCAACAACATCGCCAAGGGCATCCTGAAATATGCCCATTCGGGCGGGGTGCGGCTTGGGGGCCTGATCTGCAACGAACGTCAA
-	>meta1_6
-	CCTCGACTTCGTTTTCTACGACGTTCTGGGCGACGTCGTGTGTGGCGGATTCGCTATGCCGATTCGTGAAAACAAGGCGCAGGAAATCTACATTGTTGTA
-	>meta1_7
-	TGGGATACGGCGAAGTCAAGTGCGTCGAGTCTGGTGGTCCTGAGCCCGGTGTCGGATGTGCTGGTCGTGGCGTGATCACCGCGATCAACTTCCTCGAAGA
-	>meta1_8
-	TGGAGGATGTGCGCAAGGAGGGGTACGGAGGCACCATGTGCACGGAATCGGGAGGCCCTGAACCGGGAGTGGGTTGCGCGGGGCGCGGCATCATCACTTC
-	>meta1_9
-	TGGAACTGGCGGAGGCGCTGGCCAAGAAGTTGGGCACTCAGCTGATCTACTTTGTGCCGCGCGACAATGTGGTGCAGCATGCCGAGCTGCGGCGCATGAC
-	>meta1_10
-	AAATCGGCGTTTTTTCAACTGCTTAATTACAACCAATAGATAGGAGAACCCGATTATGACTAAAAAACTGAGACAAATCGCATTTTACGGCAAAGGAGGA
+	Iced coffee is my favorite drink.
 
-Exercises
----------
- 	- How would we ``wc`` only the fasta files that begin with ``seq_``? 
-	- How would we ``wc`` only the ``seq`` files whose numbers start with 2?
-	- How can we ``cat`` all the files (both those that start with ``seq`` and ``other_seq``) whose numbers start with 0?
-
-Creating, writing to, and deleting files
-----------------------------------------
-
-We can create a file with the `touch` command. For instance, to create a file called ``sample``, we enter:
+We can also output the line number that the match appears on with the ``-n`` option:
 
 .. code-block:: shell
 
-	touch sample
-
-Now when we ``ls`` in this directory, we see that it's there. What happens when we ``wc`` it?
-
-.. code-block:: shell
-
-	wc sample
+	grep -n "favorite drink" favorites
 
 *Output*:
 
 .. code-block:: shell
 
-	0 0 0 sample
+	1:Iced coffee is my favorite drink.
 
-And we can verify this by using ``cat``:
-
-.. code-block:: shell
-
-	cat sample
-
-``sample`` is empty because we didn't put anything in there. One way we can write to that file is using the ``echo`` command. ``echo`` does what it sounds like: it echoes back to you whatever you supply to it. For instance:
+If we instead wanted to look for all the lines that DID NOT contain the word "drink," we can pass the ``-v`` option to ``grep`` to invert the search. That is, it will return all the lines that don't contain the search phrase:
 
 .. code-block:: shell
 
-	echo "Something."
+	grep -v "favorite drink" favorites
 
 *Output*:
 
 .. code-block:: shell
 
-	Something.
+	My favorite movie is Speed Racer.
+	My favorite food is a burrito.
+
+We can also combine the two arguments:
+
 
 .. code-block:: shell
 
-	echo "Something else."
+	grep -nv "favorite drink" favorites
 
 *Output*:
 
 .. code-block:: shell
 
-	Something else.
+	2:My favorite movie is Speed Racer.
+	3:My favorite food is a burrito.
 
-We'll combine ``echo`` with the ``>`` operator. The ``>`` character takes the output on the left hand side and saves it to the file on the right hand side. So, if we wanted to save the phrase "Or the other" to `sample`, we would type:
-
-.. code-block:: shell
-
-	echo "Or the other" > sample
-
-Let's see what's in ``sample``:
+Another very useful option is ``-c``. This counts the number of matches in the file. For instance, to count the number of times the word "favorite" appears in ``favorites``, we can do:
 
 .. code-block:: shell
 
-	cat sample
+	grep -c "favorite" favorites
 
 *Output*:
 
 .. code-block:: shell
 
-	Or the other
+	3
 
-.. note::
-	Be very careful when you use this operator: if the file you put on the right hand side already exists, it will overwrite its contents with whatever you're putting there.
+We can combine ``c`` and ``v`` to count the number of lines a match does NOT appear on. So, to count the number of lines "drink" doesn't appear on in ``favorites``, we can do:
 
-To see this in action, let's try to write another phrase to `sample`.
-
-.. code-block:: shell
-
-	echo "Iced coffee is my favorite drink." > sample
-	cat sample
-
-What was the output? What did you expect? Like noted above, ``>`` overwrites whatever is in the target file. If you want to instead *append* text to the end of the file, use the ``>>`` operator. For example, let's add what your favorite movie is to the end of sample:
-
-.. code-block:: shell
-
-	echo "My favorite movie is a Speed Racer." >> sample
-
-We can see that it was added by running ``cat`` on ``sample``.
-
-We can also save the output of different commands using ``>``. For instance, we can save the output of ``wc *`` to a file called ``word_counts`` via:
-
-.. code-block:: shell
-
-	wc * > word_counts
-
-Exercises
----------
-- Add your favorite food to ``sample``.
-- Use the ``>>`` operator to combine ``other_seq_00.fasta``, ``seq_00.fasta``, and ``seq_13.fasta`` into a file named ``some_sequences.fasta``.
-- Create a file ``fasta_word_counts`` that contains the output of ``wc`` run on all of the fasta files creatd so far.
-
-Copying, removing, and renaming files
--------------------------------------
-
-We can copy a file using ``cp``. We first pass the name of the file we want to copy, followed by the location of where we want to copy it to. For instance, to copy the ``sample`` file to our home directory, we can type:
-
-.. code-block:: shell
-
-	cp sample ~
-
-Now, if we ``ls`` our home directory, we'll see that ``sample`` is there:
-
-.. code-block:: shell
-
-	ls ~
-
-We can also rename the file at the time of copying by supplying a new file name. For example, to copy ``sample`` inside the same directory and rename it ``favorites``, we would type:
-
-.. code-block:: shell
-
-	cp sample favorites
-
-Using ``cat`` on both files will show that they're the same:
-
-.. code-block:: shell
-
-	cat sample favorites
-
-We can use ``rm`` to delete a file. Now that we've created ``favorites``, let's delete ``sample``:
-
-.. code-block:: shell
-
-	rm sample
-
-Now if we ``ls``, we see that ``sample`` is gone. Let's say, though, for some reason, we really wanted ``sample`` back. Recall that we created a copy of ``sample`` in the home directory. We can move it into this directory using the ``mv`` command. The syntax is similar to ``cp``: we pass the file we want to move, followed by where we want to move it to. So, to move ``sample`` from the home directory to our current directory, we can do:
-
-.. code-block:: shell
-
-	mv ~/sample .
-
-Recall from the previous lesson that ``.`` is shorthand for the current directory. Now when we ``ls`` in our current directory, we see that sample is there. Likewise, when we ``ls ~`` to look into our home directory, we see that ``sample`` is no longer there. 
-
-Another important function of ``mv`` is using it to rename things. For instance, we don't really need both ``sample`` and ``favorites``. For illustration, let's delete ``favorites`` with ``rm favorites``. Then, let's use ``mv`` to rename ``sample`` to ``favorites``.
-
-.. code-block:: shell
-
-	mv sample favorites
-
-Now, when we ``ls`` in this directory, we see that ``sample`` is gone and only ``favorites`` remains.
-
-.. note::
-	Just like with the ``>`` operator, be careful how you use ``mv``. If the second file name supplied to ``mv`` doesn't exist, it will create the new file. However, if the named file DOES exist, then ``mv`` will just overwrite whatever is in there. 
-
-.. note::
-	It is possible to use ``*`` (glob expressions) with ``cp`` and ``rm``. There's no real danger using ``cp`` with these expressions, but you need to be super careful to not delete files you don't intend to on accident when using ``rm``. For safety reasons, whenever I'm going to use a glob expression with ``rm``, I test it out with ``ls`` first and check to make sure that the correct files are being identified. 
-
-
-Exercises
----------
-- Delete ``word_counts``.
-- Rename ``some_sequences.fasta`` to ``combined_sequences.fasta``.
-- We practice using ``mv`` to move a file from the home directory to our current directory; now let's try it the other way. Change back to the home directory and copy ``combined_sequences.fasta`` to the home directory. After doing that, delete the file from ``blast_crash_course/materials/shell_tutorial/data``. 
-
-Using ``*`` to combine files
-----------------------------
-
-We can also combine ``>`` with ``cat`` and ``*`` to combine files together. We already know how to output all of the files that begin with ``other_seq``:
-
-.. code-block:: shell
-
-	cat other_seq*
-
-*Output*:
-
-.. code-block:: shell
-
-	>meta1_1
-	GGGCCGTGGCGTCATCACGTCGATCAATTTCCTCGAGGAGAACGGCGCGTATGACGGCGTGGACTATGTGTCGTACGACGTGCTCGGCGACGTGGTGTGC
-	>meta1_2
-	GAGCCGGGTGTGGGATGTGCCGGGAGAGGTATCATTACTTCTATTAATTTATTGGAACAGCTTGGTGCCTATGCGGATAGCGAGGAGCTGGATTATATAT
-	>meta1_3
-	CCTGATCTGCAACGAACGTCAAACCGACCGTGAGCTCGACCTTGCTGAAGCCCTGGCTTCCAGGCTCAATTCCAAGCTCATCCATTTCGTGCCGCGCGAC
-	>meta1_4
-	TTCCATCAACATGCTGGAAAACCTCGGTGCCTACGAAGAATCCGAAGGACTGGACTACGCTTTCTATGACGTCCTCGGTGACGTTGTTTGCGGCGGATTC
-	>meta1_5
-	GATGGCGCTCTATGCCGCCAACAACATCGCCAAGGGCATCCTGAAATATGCCCATTCGGGCGGGGTGCGGCTTGGGGGCCTGATCTGCAACGAACGTCAA
-	>meta1_6
-	CCTCGACTTCGTTTTCTACGACGTTCTGGGCGACGTCGTGTGTGGCGGATTCGCTATGCCGATTCGTGAAAACAAGGCGCAGGAAATCTACATTGTTGTA
-	>meta1_7
-	TGGGATACGGCGAAGTCAAGTGCGTCGAGTCTGGTGGTCCTGAGCCCGGTGTCGGATGTGCTGGTCGTGGCGTGATCACCGCGATCAACTTCCTCGAAGA
-	>meta1_8
-	TGGAGGATGTGCGCAAGGAGGGGTACGGAGGCACCATGTGCACGGAATCGGGAGGCCCTGAACCGGGAGTGGGTTGCGCGGGGCGCGGCATCATCACTTC
-	>meta1_9
-	TGGAACTGGCGGAGGCGCTGGCCAAGAAGTTGGGCACTCAGCTGATCTACTTTGTGCCGCGCGACAATGTGGTGCAGCATGCCGAGCTGCGGCGCATGAC
-	>meta1_10
-	AAATCGGCGTTTTTTCAACTGCTTAATTACAACCAATAGATAGGAGAACCCGATTATGACTAAAAAACTGAGACAAATCGCATTTTACGGCAAAGGAGGA
-
-Now, all we have to do to save this output to a new file is put the name of a new file after the ``>``:
-
-.. code-block:: shell
-
-	cat other_seq* > other_seq.combined.fa
-
-We can double check that this was done correctly in a few different ways. We can use ``cat``:
-
-.. code-block:: shell
-
-	cat other_seq.combined.fa
-
-However, this may not always be the best choice (why?). Another way we can check is to use ``wc`` to count the number of lines in the new file:
-
-.. code-block:: shell
-
-	wc other_seq.combined.fa
-
-...compared to...
 
 .. code-block:: shell
 	
-	wc other_seq_*.fasta
-
-Exercises:
-----------
-
-- Combine all of the files that begin with ``seq`` into a file named ``seq.combined.fa``. Double check that it was done correctly.
-- Combine all of the sequences in the directory into a file named ``all_seqs.combined.fa`` and check that it was done correctly. Be careful!
-
-Creating and deleting directories
----------------------------------
-
-We can make a directory with `mkdir`. Just supply a name and a new, empty directory with that name will be created at the address specified. Let's make a new directory called ``test_dir``:
+	grep -cv "drink" favorites
 
 .. code-block:: shell
 
-	mkdir test_dir
-
-If we ``ls test_dir``, we see that nothing is inside it. Since it is empty, we can delete it using the ``rmdir`` command.
-
-.. code-block:: shell
-
-	rmdir test_dir
-
-Let's create the directory again and copy some files into it:
-
-.. code-block:: shell
-
-	mkdir test_dir
-	cp seq* test_dir
-
-Note that like other commands, ``cp`` takes ``*`` patterns: ``cp seq* test_dir`` copies all the files that begin with ``seq`` to the ``test_dir`` directory. Let's verify:
-
-.. code-block:: shell
-
-	ls test_dir
-
-Awesome! Looks like all of our files are in there. Let's try and copy this directory to our home directory:
-
-.. code-block:: shell
-
-	cp test_dir ~
-
-*Output*:
-
-
-.. code-block:: shell
-
-	cp: -r not specified; omitting directory 'test_dir/'	
-
-Looks like it didn't work. Luckily, the error was pretty self explanatory: when copying a directory, you have to supply the ``-r`` option. Let's try that again.
-
-.. code-block:: shell
-
-	cp -r test_dir ~
-
-Now when we ``ls ~``, we can see a copy of ``test_dir`` there. We'll run into a similar problem when we try to delete ``test_dir``:
-
-.. code-block:: shell
-
-	rmdir test_dir
-
-*Output*:
-
-.. code-block:: shell
-
-	rmdir: failed to remove 'test_dir/': Directory not empty
-
-`rmdir` only works on empty directories, and ``rm`` runs into the same issue we had when trying to use ``cp``:
-
-.. code-block:: shell
-
-	rm test_dir
-
-*Output*:
-
-.. code-block:: shell
-
-	rm: cannot remove 'test_dir/': Is a directory
-
-The answer to this is the same as with ``cp`` - supply the ``-r`` option and the directory will be deleted.
-
-.. code-block:: shell
-
-	rm -r test_dir
-
-.. note::
-	Be VERY careful when using ``rm -r`` as this will remove the directory and everything it contains. If you're not careful when using it, it's possible you'll delete critical system software. Just like with using ``*`` expressions with ``rm``, I always run an ``ls`` on the directory I'm going to delete first to make sure that I won't unexpectedly delete something important.
+	2
 
 Exercises
----------
+^^^^^^^^^
 
-- Delete the ``test_dir`` in the home directory.
-- Create a new directory called ``my_work``. Move ``favorites``, ``fasta_word_counts``, ``combined_sequences.fasta``, and ``all_seqs.combined.fa`` into it.
-- Move ``my_work`` to the home directory.
+- What line number does "meta" appear on in ``combined_sequences.fasta``?
+- What line number does "test" first appear on in ``all_seqs.combined.fa``?
+
+Using grep with fasta files
+---------------------------
+
+One of the advantages of working with fasta (and fastq) files is that they have a known structure: lines that start with ``>`` denote sequence headers, and the lines after that are the nucleotides that make up that sequence. Because we know that sequences start with ``>``, we can search for the sequence headers directly with ``grep``. Let's look for the sequences in ``combined_sequences.fasta``.
+
+.. code-block:: shell
+
+	grep ">" combined_sequences.fasta
+
+*Output*:
+
+.. code-block:: shell
+
+	>meta1_1
+	>test_sequence_1
+	>test_sequence_14
+
+So we see that we found the sequence headers in the ``combined_sequences.fasta`` file. If all we were interested in was the number of sequences contained in the file, we could use the ``-c`` flag from above:
+
+
+.. code-block:: shell
+
+	grep -c ">" combined_sequences.fasta
+
+*Output*:
+
+.. code-block:: shell
+
+	3
+
+Something to watch out for, though, is that sometimes people might use the ``>`` character elsewhere in the fasta header. In that case, the ``grep -c`` count will be inflated because it is counting the extra characters. A solution to this is to use the special ``^`` character at the beginning of your ``grep`` search pattern.  The ``^`` character is referred to as the "anchor" and indicates that ``grep`` should only look at the beginning of each line for the pattern. When applied to our above ``grep`` search, this means that we will only look for the ``>`` character at the beginning of a line:
+
+.. code-block:: shell
+
+	grep -c ^">" combined_sequences.fasta
+
+*Output*:
+
+.. code-block:: shell
+
+	3
+
+This is a very useful search pattern and one you'll use often to count the number of sequences in a fasta file. Note that it didn't make a difference here, but there have been times where it has. 
+
+An additional very useful argument to use with grep when searching fasta files is the ``-A n`` flag. ``-A`` stands for "after context" and prints out the next ``n`` lines after each match.
+
+Let's try it out. Let's look for "drink" again in favorites, but this time, let's pull the line after it as well:
+
+
+.. code-block:: shell
+
+	grep -A 1 "drink" favorites
+
+*Output*:
+
+.. code-block:: shell
+
+	Iced coffee is my favorite drink.
+	My favorite movie is Speed Racer.
+
+This is very useful for working with fasta files because we often want to search for certain sequences by their header, pull out their nucleotide sequences, and store them somewhere else. Here, we're going to search for the word "meta" in ``all_seqs.combined.fa`` and output the line following:
+
+.. code-block:: shell
+
+	grep -A 1 "meta" all_seqs.combined.fa
+
+*Output*:
+
+.. code-block:: shell
+
+	>meta1_1
+	GGGCCGTGGCGTCATCACGTCGATCAATTTCCTCGAGGAGAACGGCGCGTATGACGGCGTGGACTATGTGTCGTACGACGTGCTCGGCGACGTGGTGTGC
+	>meta1_2
+	GAGCCGGGTGTGGGATGTGCCGGGAGAGGTATCATTACTTCTATTAATTTATTGGAACAGCTTGGTGCCTATGCGGATAGCGAGGAGCTGGATTATATAT
+	>meta1_3
+	CCTGATCTGCAACGAACGTCAAACCGACCGTGAGCTCGACCTTGCTGAAGCCCTGGCTTCCAGGCTCAATTCCAAGCTCATCCATTTCGTGCCGCGCGAC
+	>meta1_4
+	TTCCATCAACATGCTGGAAAACCTCGGTGCCTACGAAGAATCCGAAGGACTGGACTACGCTTTCTATGACGTCCTCGGTGACGTTGTTTGCGGCGGATTC
+	>meta1_5
+	GATGGCGCTCTATGCCGCCAACAACATCGCCAAGGGCATCCTGAAATATGCCCATTCGGGCGGGGTGCGGCTTGGGGGCCTGATCTGCAACGAACGTCAA
+	>meta1_6
+	CCTCGACTTCGTTTTCTACGACGTTCTGGGCGACGTCGTGTGTGGCGGATTCGCTATGCCGATTCGTGAAAACAAGGCGCAGGAAATCTACATTGTTGTA
+	>meta1_7
+	TGGGATACGGCGAAGTCAAGTGCGTCGAGTCTGGTGGTCCTGAGCCCGGTGTCGGATGTGCTGGTCGTGGCGTGATCACCGCGATCAACTTCCTCGAAGA
+	>meta1_8
+	TGGAGGATGTGCGCAAGGAGGGGTACGGAGGCACCATGTGCACGGAATCGGGAGGCCCTGAACCGGGAGTGGGTTGCGCGGGGCGCGGCATCATCACTTC
+	>meta1_9
+	TGGAACTGGCGGAGGCGCTGGCCAAGAAGTTGGGCACTCAGCTGATCTACTTTGTGCCGCGCGACAATGTGGTGCAGCATGCCGAGCTGCGGCGCATGAC
+	>meta1_10
+	AAATCGGCGTTTTTTCAACTGCTTAATTACAACCAATAGATAGGAGAACCCGATTATGACTAAAAAACTGAGACAAATCGCATTTTACGGCAAAGGAGGA
+
+And just like before, we can use the ``>`` to store these sequences in a new file called ``meta_sequences.fa``:
+
+.. code-block:: shell
+
+	grep -A 1 "meta" all_seqs.combined.fa > meta_sequences.fa
+
+
+Exercise
+^^^^^^^^
+
+- Count the number of sequences in ``all_seqs.combined.fa``.
+- Search ``all_seqs.combined.fa`` for all sequences whose number starts with ``2``. How many were there? Save them to a file named ``seqs_2.fasta``.
+- We used the ``-A 1`` flag earlier to pull the sequence after each match. What assumption are we making about the structure of the file when we do this?
+
+.. note::
+	
+	This is a lot to take in and use right away, but there are a ton of resources to help you remember and work things out. There are also the ``man`` pages that you can access in the terminal by typing ``man grep`` (or whatever other command you have). This help text will show you the usage of the command and the different arguments. And of course there is Google. You'll almost certainly be able to find an answer to your question online. However, it's good practice to try and use ``man`` to figure out yourself so build up your "problem solving" muscle. 
