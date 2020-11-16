@@ -1,8 +1,9 @@
-=================================================
-Introduction of BLAST
-=================================================
-Authored by: Jia Liu, Paul Villanueva, and Adina Howe; MODIFIED from a previous `tutorial <http://blast-tutorial.readthedocs.io/en/latest/ncbi/index.html>`_
-=================================================
+===============================
+Running a bioinformatic program
+===============================
+
+Authored by: Jia Liu, Paul Villanueva, and Adina Howe
+Modified from a previous `tutorial <http://blast-tutorial.readthedocs.io/en/latest/ncbi/index.html>`_
 
 ==============================
 Section 1. Learning objectives
