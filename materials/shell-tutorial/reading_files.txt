@@ -1,10 +1,17 @@
 2. Reading and writing files
 ==================
 
-Let's start by navigating to ``blast_crash_course/materials/shell-tutorial``.
+Let's start by navigating to the ``data`` file within the ``shell-tutorial`` folder.
 
 .. code-block:: shell
 
-	cd ~/blast_crash_course/materials/shell-tutorial
+	cd ~/blast_crash_course/materials/shell-tutorial/data
+
+You can dump out the contents of the file by using the ``cat`` command. Let's see what's in the ``big-fasta.fa``.
 
 
+.. code-block:: shell
+
+	cat big-fasta.fa
+
+That's a whole lot of stuff!
