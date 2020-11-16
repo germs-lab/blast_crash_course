@@ -7,7 +7,8 @@ This is material for a workshop hosted on 11/17/2020 by the GERMS lab. The goal 
    :maxdepth: 2
    :caption: Contents:
 
-   materials/shell-tutorial/index.txt
+   materials/shell-tutorial/file_nav
+   materials/shell-tutorial/reading_files
    ncbi/index
 
 Acknowledgement:

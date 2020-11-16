@@ -185,13 +185,3 @@ Exercises
 1. List the contents of your home directory. (Hint: use one of the special characters from the table above)
 2. 
 
-
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-

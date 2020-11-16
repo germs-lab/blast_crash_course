@@ -1,0 +1,10 @@
+2. Reading and writing files
+==================
+
+Let's start by navigating to ``blast_crash_course/materials/shell-tutorial``.
+
+.. code-block:: shell
+
+	cd ~/blast_crash_course/materials/shell-tutorial
+
+
