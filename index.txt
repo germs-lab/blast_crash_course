@@ -10,6 +10,9 @@ This is material for a workshop hosted on 11/17/2020 by the GERMS lab. The goal 
    materials/shell-tutorial/index.txt
    ncbi/index
 
+Acknowledgement:
+
+This work was supported by the National Science Foundation Directorate of Biological Sciences under awards DEB 1737758 and DEB 1737765.
 
 Indices and tables
 ==================
