@@ -1,0 +1,49 @@
+File Navigation
+=========================================================
+
+File navigation:
+
+We'll begin learning how to use the shell with the most basic aspect: knowing where you are in the file system and knowing what files are in there. The `pwd` command tells you this by printing out the **p**resent **w**orking **d**irectory to the console:
+
+.. code-block:: shell
+	
+	pwd
+
+<output>
+
+The output of this is a *path*. Think of it as the address in the system. The address it puts out is `/home`. Just like this suggests, this is your *home* directory and is the first directory that you are logged in to when you log into the system.
+
+Next, let's find out what files are there. The `ls` command will list the files in our current working directory. 
+
+.. code-block:: shell
+
+	ls
+
+<output>
+
+Notice that there is a bunch of stuff here. Some of these things are files and some things are directories. In the Jupyter Lab shell, it colors the directories blue to help you easily tell the difference, but that may not always be the case. We can use the following command to help us determine that:
+
+.. code-block:: shell
+
+	ls -l
+
+The `-l` following the `ls` command is an optional argument that tells `ls` to output the directory contents in a **l**ong format. Notice the output here:
+
+.. code-block:: shell
+
+	drwxrwxr-x 26 ubuntu ubuntu 4096 Nov  9 16:43 anaconda3
+	drwxrwxr-x  6 ubuntu ubuntu 4096 Nov 16 04:33 blast_crash_course
+	drwxrwxr-x  2 ubuntu ubuntu 4096 Nov  9 16:44 certs
+	-rw-rw-r--  1 ubuntu ubuntu    0 Nov 16 04:35 something
+
+Typing `ls` by itself will display the contents of your current directory. You can also type the name of another directory 
+
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+

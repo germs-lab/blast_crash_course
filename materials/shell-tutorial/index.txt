@@ -14,6 +14,8 @@ Material for a one day BLAST crash course hosted by the `GERMS lab <http://www.g
 	:maxdepth: 2
 	:caption: Contents:
 
+	file_nav
+
 
 Indices and tables
 ==================
