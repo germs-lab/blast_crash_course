@@ -1,0 +1,27 @@
+.. Tutorial - Databases documentation master file, created by
+   sphinx-quickstart on Tue Aug  5 15:35:10 2014.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+BLAST Crash Course
+=========================================================
+
+Authors: Jia Liu, Paul Villanueva, and Adina Howe. 
+
+Material for a one day BLAST crash course hosted by the `GERMS lab <http://www.germslab.org/>`_. 
+
+.. toctree::
+	:maxdepth: 2
+	:caption: Contents:
+
+	shell-tutorial/index
+	nbi/index
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+
