@@ -6,19 +6,13 @@ This is material for a workshop hosted on 11/17/2020 by the GERMS lab. The goal 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+   :numbered:
 
-   materials/shell-tutorial/file_nav
-   materials/shell-tutorial/reading_files
+   materials/shell-tutorial/docs/file_nav
+   materials/shell-tutorial/docs/reading_files
    ncbi/index
 
 Acknowledgement:
 
 This work was supported by the National Science Foundation Directorate of Biological Sciences under awards DEB 1737758 and DEB 1737765.
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
 
