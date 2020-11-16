@@ -1,9 +1,9 @@
-File Navigation
-=========================================================
+1. File Navigation and Listing
+==================
 
 File navigation:
 
-We'll begin learning how to use the shell with the most basic aspect: knowing where you are in the file system and knowing what files are in there. The `pwd` command tells you this by printing out the **p**resent **w**orking **d**irectory to the console:
+We'll begin learning how to use the shell with the most basic aspect: knowing where you are in the file system and knowing what files are in there. The ``pwd`` command tells you this by printing out the **p**resent **w**orking **d**irectory to the console:
 
 .. code-block:: shell
 	
@@ -11,9 +11,9 @@ We'll begin learning how to use the shell with the most basic aspect: knowing wh
 
 <output>
 
-The output of this is a *path*. Think of it as the address in the system. The address it puts out is `/home`. Just like this suggests, this is your *home* directory and is the first directory that you are logged in to when you log into the system.
+The output of this is a *path*. Think of it as the address in the system. The address it puts out is ``/home``. Just like this suggests, this is your *home* directory and is the first directory that you are logged in to when you log into the system.
 
-Next, let's find out what files are there. The `ls` command will list the files in our current working directory. 
+Next, let's find out what files are there. The ``ls`` command will list the files in our current working directory. 
 
 .. code-block:: shell
 
@@ -27,7 +27,7 @@ Notice that there is a bunch of stuff here. Some of these things are files and s
 
 	ls -l
 
-The `-l` following the `ls` command is an optional argument that tells `ls` to output the directory contents in a **l**ong format. Notice the output here:
+The ``-l`` following the ``ls`` command is an optional argument that tells ``ls`` to output the directory contents in a **l**ong format. Notice the output here:
 
 .. code-block:: shell
 
@@ -36,7 +36,155 @@ The `-l` following the `ls` command is an optional argument that tells `ls` to o
 	drwxrwxr-x  2 ubuntu ubuntu 4096 Nov  9 16:44 certs
 	-rw-rw-r--  1 ubuntu ubuntu    0 Nov 16 04:35 something
 
-Typing `ls` by itself will display the contents of your current directory. You can also type the name of another directory 
+The contents of each of the columns are:
+
++--------+------------------------------+
+| Column | Value                        |
++========+==============================+
+| 1      | File permissions             |
++--------+------------------------------+
+| 2      | File size (in memory blocks) |
++--------+------------------------------+
+| 3      | File owner                   |
++--------+------------------------------+
+| 4      | Owner group                  |
++--------+------------------------------+
+| 5      | File size (in bytes)         |
++--------+------------------------------+
+| 6      | Creation date                |
++--------+------------------------------+
+| 7      | File or directory name       |
++--------+------------------------------+
+
+All of this is useful information, but all we're concerned with right now is the file permissions. The **d** in the front of this string tells us that the object we're looking at is a directory.
+
+Typing ``ls`` by itself will display the contents of your current directory. You can also type the name of another directory to list its contents. Let's take a look at the ``blast-crash-course`` directory:
+
+.. code-block:: shell
+
+	ls blast-crash-course
+
+Now let's move into the directory. The ``cd`` command changes the present working directory to the directory that you enter. For example, to move into the ``blast_crash_course`` directory, we would type:
+
+.. code-block:: shell
+
+	cd blast-crash-course
+
+We looked at the contents of this directory from our home directory just before we did the ``cd`` command, but let's do it again for practice:
+
+.. code-block:: shell
+
+	ls
+
+Let's move into the ``materials`` folder:
+
+.. code-block:: shell
+
+	cd materials
+
+Now that we're here, let's ``ls`` again so we know what's in here:
+
+
+.. code-block:: shell
+
+	ls
+
+And let's move into the shell-tutorial folder...
+
+.. code-block:: shell
+
+	cd shell-tutorial
+
+...and ``ls`` again:
+
+.. code-block:: shell
+
+	ls
+
+Get used to using ``ls`` a lot - when you're working with your data and moving between directories frequently, you're going to frequently use ``ls`` to remind yourself what's in each folder.  I personally just hit ``ls`` whenever I move into a new directory.
+
+There are also some shorthand ways to maneuver around the file system using ``cd``. For example, we can move to our home directory by using the ~ character:
+
+.. code-block:: shell
+
+	cd ~
+
+Using the ``pwd`` command will show you that we're back in the home directory. Similarly, using the ``-`` character will move us to the last directory we were at:
+
+.. code-block:: shell
+
+	cd -
+
+We can also move up one directory with ``..``:
+
+.. code-block:: shell
+
+	cd ..
+
+Do you remember where we are now? Use ``pwd`` to remind yourself. 
+
+We can also pass the ``..`` argument to ``ls`` to see what's in the directory above our current one:
+
+.. code-block:: shell
+
+	ls ..
+
+See the table below for a reference for the different ``cd`` arguments:
+
++-------------+------------------------------------+
+| cd argument | Meaning                            |
++=============+====================================+
+| ``.``       | This directory                     |
++-------------+------------------------------------+
+| ``..``      | The directory above this directory |
++-------------+------------------------------------+
+| ``-``       | The last directory                 |
++-------------+------------------------------------+
+|             | Home directory                     |
++-------------+------------------------------------+
+| ``~``       | Home directory                     |
++-------------+------------------------------------+
+| ``/``       | Root directory                     |
++-------------+------------------------------------+
+
+So far, we've been using ``cd`` change directories one step at a time. However, we can change directories more than one step at a time by just typing out the full path. For example, let's go back to our home directory...
+
+.. code-block:: shell
+
+	cd ~
+
+...and navigate to the ``shell-tutorial`` folder in one ``cd`` command.
+
+.. code-block:: shell
+
+	cd blast_crash_course/materials/shell-tutorial
+
+Note that you don't have to type out the full name of each of the directories. If you start typing the name of a file and press ``tab``, shell will attempt to autocomplete the name for you. So, to complete the above command using tab completion, you can type:
+
+.. code-block:: shell
+	
+	cd blast<tab>mat<tab>shell<tab>
+
+We can combine this with the special ``cd`` options we learned before. For example, let's take a look at what's in the directory above ``shell-tutorial``:
+
+.. code-block:: shell
+
+	ls ..
+
+If we wanted to move to the ``blast-tutorial`` directory, we can type:
+
+.. code-block:: shell
+
+	cd ../blast-tutorial
+
+Nice!
+
+Exercises
+---------
+
+1. List the contents of your home directory. (Hint: use one of the special characters from the table above)
+2. 
+
 
 
 
