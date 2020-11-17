@@ -168,7 +168,7 @@ Command line BLAST
 
 Navigate to the data folder that we will be working in today::
 
-	cd cd ~/blast_crash_course/materials/blast-tutorial/data/
+	cd ~/blast_crash_course/materials/blast-tutorial/data/
 	ls 
 	ls -R # list recursively directory tree
 
@@ -418,7 +418,7 @@ We may be interested in::
 2. How many times in total did sequences from corn metagenomes hit nifh genes::
 
 	# how many lines are there in corn blast output file:
-	wc -l metags/corn.fa-blast-output.txt
+	wc -l corn.fa-blast-output.txt
 
 3. How many uniq nifh genes were hit by sequences from soybean metagenome::
 
