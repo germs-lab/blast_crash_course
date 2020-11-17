@@ -11,7 +11,7 @@ In order to complete this workshop, you'll need:
 2. The materials for the workshop. The materials for the workshop are available at `the Github repo <https://github.com/germs-lab/blast_crash_course>`_. You can download them to your computer by typing ``git clone https://github.com/germs-lab/blast_crash_course.git`` in your shell program.
 
 .. note::
-	If you're attending the workshop hosted on 11/17/2020 at the conference hsoted by VI Escuela Regional de Microbiología, you will have a diferent set up for this.
+	If you're attending the workshop on 11/17/2020 by VI Escuela Regional de Microbiología, you will have a different set up for this and there is no need for you to follow these directions.
 
 
 .. toctree::
